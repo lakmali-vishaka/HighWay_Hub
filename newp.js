@@ -62,7 +62,7 @@ useEffect(() => {
       try {
         const storedNIC = await AsyncStorage.getItem('NIC');
         //const storedAge = await AsyncStorage.getItem('age');
-        if (storedName) setNIC(storedNIC);
+        if (storedNIC) setNIC(storedNIC);
         //if (storedAge) setAge(storedAge);
       } catch (error) {
         console.log('Failed to retrieve data from storage', error);
