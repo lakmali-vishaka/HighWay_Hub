@@ -31,6 +31,28 @@ app.post('/pay', async(req, res) => {
     }
 })
 
+//HFB
+// Express.js example of the 'get-vehicles' endpoint
+app.post('/vehicle/get-vehicles', async (req, res) => {
+    const { NIC } = req.body;
+    
+    try {
+      // Fetch vehicles from the database using the NIC
+      const vehicles = await Vehicle.find({ NIC });
+  
+      // Check if any vehicles were found
+      if (vehicles.length > 0) {
+        res.json({ isValid: true, vehicles });
+      } else {
+        res.json({ isValid: false, message: 'No vehicles found for this NIC.' });
+      }
+    } catch (error) {
+      console.error('Error fetching vehicles:', error);
+      res.status(500).json({ isValid: false, message: 'Server error.' });
+    }
+  });
+  
+//HFB
 
 // Use the required dependencies
 app.use(cors(

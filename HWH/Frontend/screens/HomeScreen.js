@@ -11,22 +11,25 @@ export default function HomeScreen() {
   const screenWidth = Dimensions.get("window").width;
   const [activeIndex, setActiveIndex] = useState(0);
   const [entranceMessage, setEntranceMessage] = useState(null); //test123
-  //const [exiteMessage, setExitMessage] = useState(null); //test123
+  const [exitMessage, setExitMessage] = useState(null); //test123
 
   //test123----
   useEffect(() => {
-    const fetchEntranceMessage = async () => {
+    const fetchMessage = async () => {
       try {
-        const message = await AsyncStorage.getItem('EntranceMessage');
-        if (message !== null) {
-          setEntranceMessage(message);
+        const message1 = await AsyncStorage.getItem('EntranceMessage');
+        const message2 = await AsyncStorage.getItem('ExitMessage');
+        if (message1 !== null) {
+          setEntranceMessage(message1);
+        } else if ((message1 == null) && (message2 !== null)) {
+          setExitMessage(message2);
         }
       } catch (error) {
         console.error('Error retrieving entrance message:', error);
       }
     };
 
-    const interval = setInterval(fetchEntranceMessage, 1000); // Check every second
+    const interval = setInterval(fetchMessage, 1000); // Check every second
 
     return () => clearInterval(interval);
   }, []);
@@ -127,7 +130,8 @@ export default function HomeScreen() {
       {/*test123 ----*/}
       <View style={styles.content}>
         <Text style={{color:'#FF6F00'}}>Your Journey Status:</Text>
-        <Text placeholder='Vehicle Journey Status' editable={false} style={styles.messageText}>{entranceMessage}</Text>
+        <Text placeholder='Vehicle Journey Status' editable={false} style={styles.messageText}>
+          {exitMessage !== null ? exitMessage : (entranceMessage !== null ? entranceMessage : '')}</Text>
       </View>
       {/*test123 ----*/}
 
@@ -191,7 +195,7 @@ const styles = StyleSheet.create({
   dotIndicatorContainer: {
     flexDirection: "row",
     justifyContent: "center",
-    marginTop: 13,
+    marginTop: 0,
     marginBottom:10
   },
   bottomRectangle: {
@@ -248,7 +252,6 @@ const styles = StyleSheet.create({
     borderRadius: 5,
   },
   content: {
-   
     justifyContent:'center',
     alignItems: 'center',
     borderRadius:20, 

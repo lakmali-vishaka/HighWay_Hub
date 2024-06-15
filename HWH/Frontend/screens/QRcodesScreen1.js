@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from 'react';
-import { View, Text, Image, TouchableOpacity, ScrollView ,StyleSheet} from 'react-native';
+import React, { useState, useEffect, useRef } from 'react';
+import { View, Text, Image, TouchableOpacity, ScrollView ,StyleSheet, RefreshControl} from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { StatusBar } from 'expo-status-bar';
 import Animated from 'react-native-reanimated';
@@ -12,6 +12,8 @@ import CONFIG from '../config';
 
 export default function QRcodesScreen1() {
   const navigation = useNavigation();
+  const [refreshing, setRefreshing] = useState(false);  //refresh
+  const scrollViewRef = useRef(null); //refresh
   const URL = CONFIG.CONNECTION_URL;
 
   const [vehicles, setVehicles] = useState([]);
@@ -19,6 +21,34 @@ export default function QRcodesScreen1() {
   const [Entrance, setEntrance] = useState('');
   const [Exit, setExit] = useState('');
   const [ticketAmount, setTicketAmount] = useState(null);
+
+  {/*useEffect(() => {
+    const fetchVehicles = async () => {
+      try {
+        const NIC = await AsyncStorage.getItem('userNIC');
+        if (NIC) {
+          fetchVehiclesByNIC(NIC);
+        }
+      } catch (error) {
+        console.error('Error retrieving NIC:', error);
+      }
+    };
+    fetchVehicles();
+  }, []);
+
+  const fetchVehiclesByNIC = async (NIC) => {
+    try {
+      const response = await axios.post(`${URL}/vehicle/get-vehicles`, { NIC });
+      if (response.data.isValid) {
+        setVehicles(response.data.vehicles);
+        await AsyncStorage.setItem('vehicles', JSON.stringify(response.data.vehicles));
+      } else {
+        alert('No vehicles found for this NIC.');
+      }
+    } catch (error) {
+      console.error('Error fetching vehicles:', error);
+    }
+  };*/}
 
   useEffect(() => {
     const fetchVehicles = async () => {
@@ -48,23 +78,24 @@ export default function QRcodesScreen1() {
     ? `${selectedVehicle.register_no}, ${selectedVehicle.sv}, ${Entrance}`
     : '';
 
-  const fetchEntranceFromBackend = async () => {
-    try {
-      const response = await axios.post(`${URL}/vehicle/get-entrance`, { Vehicle_number: selectedVehicle.register_no },{
-      timeout: 3000 // Set timeout to 3 seconds (adjust as needed)
-    });
-      if (response.data.isValid) {
-        const fetchedEntrance = response.data.entrance;
-        setEntrance(fetchedEntrance);
-        await AsyncStorage.setItem('Entrance', fetchedEntrance);
-        await AsyncStorage.setItem('EntranceMessage', `Your vehicle has entered the highway from ${fetchedEntrance} entrance`);  //test123
-      } else {
-        alert('Vehicle Not Found', 'The vehicle number is not registered.');
+    const fetchEntranceFromBackend = async () => {
+      try {
+        const response = await axios.post(`${URL}/vehicle/get-entrance`, { Vehicle_number: selectedVehicle.register_no },{
+        timeout: 3000 // Set timeout to 3 seconds (adjust as needed)
+      });
+        if (response.data.isValid) {
+          const fetchedEntrance = response.data.entrance;
+          setEntrance(fetchedEntrance);
+          await AsyncStorage.setItem('Entrance', fetchedEntrance);
+          await AsyncStorage.setItem('EntranceMessage', `Your vehicle has entered the highway from ${fetchedEntrance} entrance`);  //test123
+        } else {
+          alert('Vehicle Not Found', 'The vehicle number is not registered.');
+        }
+      } catch (error) {
+        alert('Your Journey Not Started.');
+        await AsyncStorage.removeItem('ExitMessage');
       }
-    } catch (error) {
-      alert('Your Journey Not Started.');
-    }
-  };
+    };
 
   useEffect(() => {
     if (selectedVehicle) {
@@ -82,14 +113,12 @@ export default function QRcodesScreen1() {
         setExit(fetchedExit);
         await AsyncStorage.setItem('Exit', fetchedExit);
         await AsyncStorage.setItem('EntranceMessage', ` Your vehicle has exited the highway from ${fetchedExit} exit`);  //test123
-        setTimeout(async () => {
-          await AsyncStorage.removeItem('EntranceMessage');
-        }, 360000);
       } else {
         alert('Vehicle Not Found', 'The vehicle number is not registered.');
       }
     } catch (error) {
-      alert('Welcome ! yourjourney started have a safe journey.');
+      //alert('Welcome ! yourjourney started have a safe journey.');
+      await AsyncStorage.removeItem('EntranceMessage');
     }
   };
 
@@ -120,58 +149,81 @@ export default function QRcodesScreen1() {
     }
   }, [Entrance, Exit]);
 
-  
+  //refresh
+  const onRefresh = async () => {
+    setRefreshing(true);
+    // Call the data fetching function here
+    await fetchEntranceFromBackend();
+    await fetchExitFromBackend();
+    setRefreshing(false);
+  };
+  //refresh
 
   return (
     <View style={{ flex: 1, backgroundColor: '#fff', marginTop: 25 }}>
-      <StatusBar style='dark' />
-      <View style={styles.header}>
-        <Icon name="arrow-left" size={18} color="#ffff" onPress={() => navigation.push('Home')} />
-        <Text style={styles.title}>HighWay Hub</Text>
-        <TouchableOpacity style={styles.profileIcon} onPress={() => navigation.push('user')}>
-          <Image source={require('../assets/images/profile.jpg')} style={styles.profileImage} />
-        </TouchableOpacity>
-      </View>
-
-      <View className="w-full p-1 mt-5 flex-row justify-center" style={{backgroundColor:'#FF6F00'}}>
-        <Text className="text-center font-bold text-lg" style={{color:'#080742'}}>QR Codes</Text>
-      </View>
-
-      <View style={{ backgroundColor: '#E0E0E0', borderRadius: 20, alignSelf: 'center', width: 300, marginTop: 30, height:60}}>
-        <Picker
-          selectedValue={selectedVehicle}
-          onValueChange={(itemValue, itemIndex) => handleChangeVehicle(itemValue)}
-          style={{ height: 60, width: 280 }} 
-        >
-          <Picker.Item label="Select Vehicle" value={null} color={'gray'} />
-          {vehicles.map((vehicle, index) => (
-            <Picker.Item key={index} label={`${vehicle.register_no} `} value={vehicle} color="#080742"  />
-          ))}
-        </Picker>
-      </View>
-
-
-
-      {selectedVehicle && (
-        <View style={{ marginTop: 50, alignItems: 'center' }}>
-          <QRCode
-            value={qrData}
-            size={200}
-            color='#080742'
-          />
+      <ScrollView
+        ref={scrollViewRef}
+        refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}
+        onScroll={(event) => {
+          const offsetY = event.nativeEvent.contentOffset.y;
+          if (offsetY <= 0) {
+            // If the user scrolls to the top, enable pull-to-refresh
+            scrollViewRef.current.scrollTo({ y: 0, animated: true });
+            setRefreshing(true);
+            onRefresh();
+          }
+        }}
+        scrollEventThrottle={16}
+      >
+        <StatusBar style='dark' />
+        <View style={styles.header}>
+          <Icon name="arrow-left" size={18} color="#ffff" onPress={() => navigation.push('Home')} />
+          <Text style={styles.title}>HighWay Hub</Text>
+          <TouchableOpacity style={styles.profileIcon} onPress={() => navigation.push('user')}>
+            <Image source={require('../assets/images/profile.jpg')} style={styles.profileImage} />
+          </TouchableOpacity>
         </View>
-      )}
 
-      <Animated.Text style={{ color: '#080742', fontSize: 18, paddingTop: 30, alignSelf: 'center' }}>Entrance: {Entrance}</Animated.Text>
-      <Animated.Text style={{ color: '#080742', fontSize: 18, paddingTop: 20, alignSelf: 'center' }}>Exit: {Exit}</Animated.Text>
+        <View className="w-full p-1 mt-5 flex-row justify-center" style={{backgroundColor:'#FF6F00'}}>
+          <Text className="text-center font-bold text-lg" style={{color:'#080742'}}>QR Codes</Text>
+        </View>
 
-      {ticketAmount !== null && (
-        <TouchableOpacity style={{ alignSelf: 'center' }} onPress={() => navigation.push('PaymentAmount')}>
-          <View style={{ backgroundColor: '#080742', marginTop: 20, borderRadius: 60, alignItems: 'center', height: 40, width: 300 }}>
-            <Text style={{ color: 'white', fontSize: 18, marginTop: 5, fontWeight: 'bold' }}>Continue</Text>
+        <View style={{ backgroundColor: '#E0E0E0', borderRadius: 20, alignSelf: 'center', width: 300, marginTop: 30, height:60}}>
+          <Picker
+            selectedValue={selectedVehicle}
+            onValueChange={(itemValue, itemIndex) => handleChangeVehicle(itemValue)}
+            style={{ height: 60, width: 280 }} 
+          >
+            <Picker.Item label="Select Vehicle" value={null} color={'gray'} />
+            {vehicles.map((vehicle, index) => (
+              <Picker.Item key={index} label={`${vehicle.register_no} `} value={vehicle} color="#080742"  />
+            ))}
+          </Picker>
+        </View>
+
+
+
+        {selectedVehicle && (
+          <View style={{ marginTop: 50, alignItems: 'center' }}>
+            <QRCode
+              value={qrData}
+              size={200}
+              color='#080742'
+            />
           </View>
-        </TouchableOpacity>
-      )}
+        )}
+
+        <Animated.Text style={{ color: '#080742', fontSize: 18, paddingTop: 30, alignSelf: 'center' }}>Entrance: {Entrance}</Animated.Text>
+        <Animated.Text style={{ color: '#080742', fontSize: 18, paddingTop: 20, alignSelf: 'center' }}>Exit: {Exit}</Animated.Text>
+
+        {ticketAmount !== null && (
+          <TouchableOpacity style={{ alignSelf: 'center' }} onPress={() => navigation.push('PaymentAmount')}>
+            <View style={{ backgroundColor: '#080742', marginTop: 20, borderRadius: 60, alignItems: 'center', height: 40, width: 300 }}>
+              <Text style={{ color: 'white', fontSize: 18, marginTop: 5, fontWeight: 'bold' }}>Continue</Text>
+            </View>
+          </TouchableOpacity>
+        )}
+      </ScrollView>
     </View>
   );
 }

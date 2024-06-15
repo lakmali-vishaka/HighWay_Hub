@@ -1,19 +1,32 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { View, Text, StyleSheet, Image, TouchableOpacity, TextInput, ScrollView } from 'react-native';
 import { StatusBar } from 'expo-status-bar';
 import { useNavigation } from '@react-navigation/native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { Picker } from '@react-native-picker/picker';
 import axios from 'axios';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import CONFIG from '../config';
 
 const VregisterScreen1 = () => {
   const [vehicles, setVehicles] = useState([{ register_no: '', sv: '' }]);
+  const [nic, setNic] = useState(''); //HFB
   const navigation = useNavigation();
   const URL = CONFIG.CONNECTION_URL;
 
   const [message, setMessage] = useState('');
   const [error, setError] = useState('');
+
+  //HFB
+  useEffect(() => {
+    const fetchNic = async () => {
+      const storedNic = await AsyncStorage.getItem('userNIC');
+      if (storedNic) setNic(storedNic);
+    };
+
+    fetchNic();
+  }, []);
+  //HFB
 
   const handleChange = (index, key, value) => {
     const updatedVehicles = [...vehicles];
@@ -49,6 +62,7 @@ const VregisterScreen1 = () => {
         const vehicleInfo = {
           Vehicle_number: register_no,
           Type: sv,
+          NIC: nic, //HFB
         
         };
         const response = await axios.post(`${URL}/vehicle/addVehicle`, vehicleInfo);
