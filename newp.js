@@ -1,13 +1,11 @@
-//require("dotenv").config(); 
-import React, { useState,useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { View, Text, Image, TextInput, TouchableOpacity, ScrollView } from 'react-native';
 import { StatusBar } from 'expo-status-bar';
-import Animated, { FadeIn, FadeInUp, FadeInDown } from 'react-native-reanimated';
+import Animated, { FadeInUp, FadeInDown } from 'react-native-reanimated';
 import { useNavigation } from '@react-navigation/native';
 import axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import CONFIG from '../config';
-
 
 export default function LoginScreen() {
   const navigation = useNavigation();
@@ -17,90 +15,42 @@ export default function LoginScreen() {
   const [password, setPassword] = useState('');
   const [message, setMessage] = useState('');
 
-  
-
-  /*const handleSubmit = () => {
-  axios.post('http://192.168.43.116:8070/user/login', { NIC, password })
-    .then(response => {
-      console.log(response);
-      if (response.data.error) {
-        setMessage('Invalid credentials. Please try again.');
-      } else {
-        // Assuming the response contains user data
-        const userData = response.data;
-        setMessage('Login successful!');
-        // Now you can navigate to the Home screen or handle the user data as needed
-        navigation.navigate('Home', { userData });
-      }
-    })
-    .catch(err => console.log(err));
-};
-*/
-
-//HFB
-const handleSubmit = async () => {
-  try {
-    const result = await axios.post(`${URL}/user/login`, { NIC, password });
-
-    console.log(result);
-
-    if (result.data === "Success") {
-      setMessage('Login successful!');
-     // await AsyncStorage.setItem('userNIC', NIC); // Save NIC to AsyncStorage
-      navigation.navigate('Home');
-    } else {
-      setMessage('Invalid credentials. Please try again.');
-    }
-  } catch (err) {
-    console.log(err);
-  }
-
-
-//new
-useEffect(() => {
+  useEffect(() => {
     const getStoredData = async () => {
       try {
         const storedNIC = await AsyncStorage.getItem('NIC');
-        //const storedAge = await AsyncStorage.getItem('age');
         if (storedNIC) setNIC(storedNIC);
-        //if (storedAge) setAge(storedAge);
       } catch (error) {
         console.log('Failed to retrieve data from storage', error);
       }
     };
 
-    getStoredNIC();
+    getStoredData();
   }, []);
 
-  //const handleSubmit = async () => {
+  const handleSubmit = async () => {
     try {
       await AsyncStorage.setItem('NIC', NIC);
-      //await AsyncStorage.setItem('age', age);
     } catch (error) {
       console.log('Failed to save data to storage', error);
-    }};
-  //};
-//HFB
+    }
 
-  {/*const handleSubmit = () => {
-    axios.post(`${URL}/user/login`, { NIC, password }) //http:/192.168.43.116:8070/user/login
-      .then(result => {
-       
-        console.log(result);
-        
-       if (result.data === "Success") {
-        
-          setMessage('Login successful!');
-          navigation.navigate('Home');
-          
-        }else {
-          setMessage('Invalid credentials. Please try again.');
-        }
-      })
-      .catch(err => console.log(err));
-  };*/}
+    try {
+      const result = await axios.post(`${URL}/user/login`, { NIC, password });
 
- 
+      console.log(result);
+
+      if (result.data === "Success") {
+        setMessage('Login successful!');
+        navigation.navigate('Home');
+      } else {
+        setMessage('Invalid credentials. Please try again.');
+      }
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
   return (
     <View style={{ height: '100%', width: '100%', backgroundColor: 'white', marginTop: 25 }}>
       <ScrollView>
