@@ -200,6 +200,7 @@ export default function ResentTiket14() {
       )}
       
           <Text style={styles.ticketText}>Amount: RS(LKR) {ticketAmount}.00</Text>
+          <Text style={styles.ticketText1}>For Any Inquiry: 1969</Text>
         </View>
       </View>
       <Text style={styles.ticketText4}>Thank You Come Again ! </Text>
@@ -255,6 +256,11 @@ const styles = StyleSheet.create({
   ticketText: {
     fontSize: 16,
     marginTop: 18,
+  },
+  ticketText1: {
+    fontSize: 12,
+    marginTop: 40,
+    textAlign:'center'
   },
   ticketText2: {
     fontSize: 16,

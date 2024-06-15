@@ -5,6 +5,7 @@ import { StatusBar } from 'expo-status-bar';
 import Animated, { FadeIn, FadeInUp, FadeInDown } from 'react-native-reanimated';
 import { useNavigation } from '@react-navigation/native';
 import axios from 'axios';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import CONFIG from '../config';
 
 
@@ -36,7 +37,27 @@ export default function LoginScreen() {
 };
 */
 
-  const handleSubmit = () => {
+//HFB
+const handleSubmit = async () => {
+  try {
+    const result = await axios.post(`${URL}/user/login`, { NIC, password });
+
+    console.log(result);
+
+    if (result.data === "Success") {
+      setMessage('Login successful!');
+      await AsyncStorage.setItem('userNIC', NIC); // Save NIC to AsyncStorage
+      navigation.navigate('Home');
+    } else {
+      setMessage('Invalid credentials. Please try again.');
+    }
+  } catch (err) {
+    console.log(err);
+  }
+};
+//HFB
+
+  {/*const handleSubmit = () => {
     axios.post(`${URL}/user/login`, { NIC, password }) //http:/192.168.43.116:8070/user/login
       .then(result => {
        
@@ -52,7 +73,7 @@ export default function LoginScreen() {
         }
       })
       .catch(err => console.log(err));
-  };
+  };*/}
 
  
   return (

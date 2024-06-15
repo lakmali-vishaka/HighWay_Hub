@@ -11,7 +11,10 @@ export default function WaitingScreen() {
     const [paymentStatus, setPaymentStatus] = useState('');
     const [error, setError] = useState(null);
 
-    useEffect(() => {
+
+
+
+    {/*useEffect(() => {
 
         // Retrieve payment status from AsyncStorage
         const getPaymentStatus = async () => {
@@ -27,7 +30,7 @@ export default function WaitingScreen() {
         };
 
         getPaymentStatus();
-    }, []);
+    }, []);*/}
 
 
     return (
@@ -61,3 +64,90 @@ export default function WaitingScreen() {
     )
 }
 
+const styles = StyleSheet.create({
+    container: {
+      //flex: 1,
+      justifyContent: 'center',
+      alignItems: 'center',
+      marginTop: 0
+    },
+    profileImage: {
+      width: 30,
+      height: 30,
+      borderRadius: 15,
+    },
+    dotIndicatorContainer: {
+      flexDirection: "row",
+      justifyContent: "center",
+      marginTop: 5,
+      marginBottom:10
+    },
+    bottomRectangle: {
+      backgroundColor: '#080742',
+      height: 120,
+      width: '100%',
+      position: 'absolute',
+      bottom: 0,
+    },
+    logo: {
+      width: 200,
+      height: 200,
+      resizeMode: 'cover',
+      borderRadius: 10,
+      alignSelf: 'center',
+      marginVertical: 'auto',
+      bottom: 0,
+    },
+    buttonContainer: {
+      marginBottom: 130,
+      width: '95%',
+      flexDirection: 'column',
+    },
+    button: {
+      backgroundColor: '#E0E0E0',
+      padding: 0,
+      marginBottom: 5,
+      borderRadius: 10,
+      borderWidth: 1,
+      borderColor: '#D9D9D9'
+    },
+    buttonText: {
+      color: '#080742',
+      fontSize: 18,
+      fontWeight: 'bold'
+    },
+    buttonIcon: {
+      right: 0,
+      marginRight: 10,
+      height: 50,
+      width: 50
+    },
+    buttonContent: {
+      flexDirection: 'row',
+      right: -30,
+      top: 10
+    },
+    iconContainer: {
+      position: 'absolute',
+      bottom: -35,
+      left: 253,
+      backgroundColor: 'transparent',
+      padding: 10,
+      borderRadius: 5,
+    },
+    content: {
+      justifyContent:'center',
+      alignItems: 'center',
+      borderRadius:20, 
+      marginBottom:10,
+      width:340,
+      height:80,
+      borderColor: '#FF6F00',
+      borderWidth: 3,
+    },
+    messageText: {
+      fontSize: 18,
+      color: '#080742',
+      textAlign:'center',
+    },
+  });

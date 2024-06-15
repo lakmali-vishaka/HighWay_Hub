@@ -3,25 +3,24 @@ const mongoose = require("mongoose");
 const vehicleSchema = new mongoose.Schema({
     Vehicle_number: {
         type: String,
-       //required: true
+        required: true  //HFB
     },
     Type: {
         type: String,
-        //required: true
+        required: true  //HFB
     },
-
-   
+    //HFB
+    NIC: {
+        type: String,
+        required: true, // Make NIC a required field
+    }, 
+    //HFB 
     Entrance: {
         type:String
     },
-
     Exit:{
         type:String
     },
-
-    USERID:{   //
-        type:String //
-    },  //
 
     
 }, {

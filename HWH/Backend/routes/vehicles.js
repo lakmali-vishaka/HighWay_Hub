@@ -1,7 +1,28 @@
+const express = require('express'); //HFB
 const router = require("express").Router();
 const Vehicle = require("../models/Vehicle");
 
-//add user (signup)
+//HFB
+router.post('/addVehicle', async (req, res) => {
+  try {
+    const { Vehicle_number, Type, NIC } = req.body;
+
+    const newVehicle = new Vehicle({
+      Vehicle_number,
+      Type,
+      NIC, // Store NIC in the database
+    });
+
+    await newVehicle.save();
+    res.status(201).send('Vehicle registered successfully');
+  } catch (error) {
+    console.error('Error registering vehicle:', error);
+    res.status(500).send('Error registering vehicle');
+  }
+});
+//HFB
+
+{/*//add user (signup)
 router.route("/addVehicle").post((req, res) => {
     
   const Vehicle_number = req.body.Vehicle_number;
@@ -20,7 +41,7 @@ router.route("/addVehicle").post((req, res) => {
       console.log(err);
   })
 
-})
+})*/}
 
 //campare data before add entrance gate
 
