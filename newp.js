@@ -69,7 +69,7 @@ useEffect(() => {
       }
     };
 
-    getStoredData();
+    getStoredNIC();
   }, []);
 
   //const handleSubmit = async () => {
