@@ -1,5 +1,4 @@
-//require("dotenv").config(); 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { View, Text, Image, TextInput, TouchableOpacity, ScrollView } from 'react-native';
 import { StatusBar } from 'expo-status-bar';
 import Animated, { FadeIn, FadeInUp, FadeInDown } from 'react-native-reanimated';
@@ -36,9 +35,30 @@ export default function LoginScreen() {
     .catch(err => console.log(err));
 };
 */
+//06-16
+useEffect(() => {
+  const getStoredData = async () => {
+    try {
+      const storedNIC = await AsyncStorage.getItem('NIC');
+      if (storedNIC) setNIC(storedNIC);
+    } catch (error) {
+      console.log('Failed to retrieve data from storage', error);
+    }
+  };
+
+  getStoredData();
+}, []);
+//06-16
 
 //HFB
 const handleSubmit = async () => {
+  //06-16
+  try {
+    await AsyncStorage.setItem('NIC', NIC);
+  } catch (error) {
+    console.log('Failed to save data to storage', error);
+  }
+  //06-16
   try {
     const result = await axios.post(`${URL}/user/login`, { NIC, password });
 

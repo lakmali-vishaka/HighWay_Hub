@@ -65,7 +65,7 @@ const VregisterScreen2 = (props) => {
     < View style={{ flex: 1, backgroundColor: '#fff', marginTop: 25 }}>
       <StatusBar style='dark'/>
       <View style={{ flexDirection: 'row', backgroundColor: '#080742', padding: 15, justifyContent: 'space-between', alignItems: 'center' }}>
-        <Icon name="arrow-left" size={18} color="#ffff" onPress={() => navigation.push('Vregister')} />
+        <Icon name="arrow-left" size={18} color="#ffff" onPress={() => navigation.push('user')} />
         <Text style={{ color: '#FF6F00', fontSize: 20 }}>HighWay Hub</Text>
         <TouchableOpacity onPress={() => navigation.push('user')}>
           <Image source={require('../assets/images/profile.jpg')} style={{ width: 30, height: 30, borderRadius: 15 }} />
@@ -73,7 +73,12 @@ const VregisterScreen2 = (props) => {
       </View>
 
       <ScrollView>
-        {vehicles.map((vehicle, index) => (
+      {vehicles.length === 0 ? (
+          <View style={styles.noVehiclesContainer}>
+            <Text style={styles.noVehiclesText}>No registered vehicles found.</Text>
+          </View>
+        ) : (
+        vehicles.map((vehicle, index) => (
           <View key={index} style={{ alignItems: 'center', marginTop: 20, marginBottom:10 }}>
             <View style={{ backgroundColor: '#FF6F00', width: '100%', height: 35, justifyContent: 'center', marginBottom: 20 }}>
               <Text style={{ color: '#080742', fontSize: 18, alignSelf: 'center', fontWeight:'bold' }}>{vehicle.register_no} - {vehicle.sv}</Text>
@@ -87,7 +92,8 @@ const VregisterScreen2 = (props) => {
               color='#080742'
             />
           </View>
-        ))}
+        ))
+        )}
       </ScrollView>
     </View>
   );
@@ -109,6 +115,14 @@ const styles = StyleSheet.create({
     color: 'white',
     fontWeight: 'bold',
     textAlign:'center'
+  },
+  noVehiclesContainer: {
+    alignItems: 'center',
+    marginTop: 250,
+  },
+  noVehiclesText: {
+    fontSize: 18,
+    color: '#808080',
   },
 });
 export default VregisterScreen2;

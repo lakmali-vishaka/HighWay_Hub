@@ -72,7 +72,7 @@ export default function UserProfileScreen() {
         <Text  style={styles.text4}> Payment details</Text>
       </TouchableOpacity>
               
-      <TouchableOpacity style={styles.Edit}> 
+      <TouchableOpacity style={styles.Edit} onPress={()=> navigation.push('T1')}> 
         <Icon name="car" size={18} color="#FF6F00" style={styles.text3}/>
         <Text  style={styles.text4}>Registered Vehicles</Text>
       </TouchableOpacity>

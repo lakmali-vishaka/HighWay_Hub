@@ -1,5 +1,5 @@
 import React, { useRef, useEffect, useState, useCallback } from 'react';  //test123
-import { View, Text, StyleSheet, Image, TouchableOpacity, Dimensions, FlatList, TextInput } from 'react-native'; 
+import { View, Text, StyleSheet, Image, TouchableOpacity, Dimensions, FlatList, TextInput,ScrollView } from 'react-native'; 
 import AsyncStorage from '@react-native-async-storage/async-storage'; //test123
 import { StatusBar } from 'expo-status-bar';
 import { useNavigation, useFocusEffect } from '@react-navigation/native'; //test123
@@ -73,7 +73,7 @@ export default function HomeScreen() {
       <View>
         <Image
           source={item.image}
-          style={{ height: 160, width: screenWidth, marginTop:10 }}
+          style={{ height: 160, width: screenWidth, marginTop:16}}
         />
       </View>
     );
@@ -94,7 +94,7 @@ export default function HomeScreen() {
           height: 5,
           width: 5,
           borderRadius: 5,
-          marginHorizontal: 6,
+          marginHorizontal: 8,
         }}
       />
     ));
@@ -109,7 +109,7 @@ export default function HomeScreen() {
           <Image source={require('../assets/images/profile.jpg')} style={styles.profileImage}/>
         </TouchableOpacity>
       </View>
-
+      
       <FlatList
         data={carouselData}
         ref={flatlistRef}
@@ -182,7 +182,7 @@ export default function HomeScreen() {
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
+    
     justifyContent: 'center',
     alignItems: 'center',
     marginTop: 0
@@ -254,10 +254,10 @@ const styles = StyleSheet.create({
   content: {
     justifyContent:'center',
     alignItems: 'center',
-    borderRadius:20, 
-    marginBottom:10,
+    borderRadius:10, 
+    marginBottom:8,
     width:340,
-    height:80,
+    height:70,
     borderColor: '#FF6F00',
     borderWidth: 3,
   },
