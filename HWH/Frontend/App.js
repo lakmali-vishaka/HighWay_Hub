@@ -26,6 +26,7 @@ import OPProfileScreen from './screens/OPProfileScreen';
 import OpExit from './screens/OpExit.js';
 import WaitingScreen  from './screens/WaitingScreen.js';
 import PaymentFailed from './screens/PaymentFailed';
+import Test_1 from './screens/Test_1';
 
 
 const Stack = createNativeStackNavigator();
@@ -35,7 +36,7 @@ function App() {
   
   return (
     <NavigationContainer>
-      <Stack.Navigator initialRouteName='Home' screenOptions={{ headerShown: false }}>
+      <Stack.Navigator initialRouteName='StartingScreen' screenOptions={{ headerShown: false }}>
         <Stack.Screen name="StartingScreen" component={StartingScreen} />
         <Stack.Screen name="Begin" component={BeginScreen} />
         <Stack.Screen name="SignUp" component={SignupScreen} />
@@ -60,6 +61,7 @@ function App() {
         <Stack.Screen name="OpExit" component={OpExit}/>
         <Stack.Screen name="OpWS" component={WaitingScreen}/>
         <Stack.Screen name="PaymentF" component={PaymentFailed} />
+        <Stack.Screen name="T1" component={Test_1} />
 
       </Stack.Navigator>
     </NavigationContainer>

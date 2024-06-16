@@ -99,6 +99,7 @@ export default function OpExit() {
       console.log(responseData); // Log the response from the backend
       setMessage('User data stored successfully');
       AsyncStorage.setItem('Exit', Exit_gate);
+      navigation.navigate('OpQrpage');
     })
     .catch(error => {
       console.error('Error:', error);

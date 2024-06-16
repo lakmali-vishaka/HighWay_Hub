@@ -17,7 +17,7 @@ const VregisterScreen1 = () => {
   const [message, setMessage] = useState('');
   const [error, setError] = useState('');
 
-  //HFB
+
   useEffect(() => {
     const fetchNic = async () => {
       const storedNic = await AsyncStorage.getItem('userNIC');
@@ -26,7 +26,7 @@ const VregisterScreen1 = () => {
 
     fetchNic();
   }, []);
-  //HFB
+  
 
   const handleChange = (index, key, value) => {
     const updatedVehicles = [...vehicles];
@@ -43,8 +43,48 @@ const VregisterScreen1 = () => {
     }
   };
   
-
   const handleSubmit = async () => {
+    try {
+      const storedVehicles = await AsyncStorage.getItem('vehicles');
+      const existingVehicles = storedVehicles ? JSON.parse(storedVehicles) : [];
+
+      if (existingVehicles.length + vehicles.length > 15) {
+        setError('You can only register up to 15 vehicles.');
+        return;
+      }
+
+      const newVehicles = await Promise.all(vehicles.map(async (vehicle) => {
+        const { register_no, sv } = vehicle;
+        if (!register_no || !sv) {
+          setError('Please fill in all the fields.');
+          return null;
+        }
+
+        const qrData = `${register_no}, ${sv}`;
+        vehicle.qrData = qrData;
+
+        const vehicleInfo = {
+          Vehicle_number: register_no,
+          Type: sv,
+          NIC: nic,
+        };
+        const response = await axios.post(`${URL}/vehicle/addVehicle`, vehicleInfo);
+        return { ...vehicle, ...vehicleInfo };
+      }));
+
+      const updatedVehicles = [...existingVehicles, ...newVehicles.filter(Boolean)];
+      await AsyncStorage.setItem('vehicles', JSON.stringify(updatedVehicles));
+      setMessage('Register successful!');
+      setTimeout(() => {
+        navigation.push('vregister1', { vehicles: updatedVehicles });
+      }, 2000);
+    } catch (error) {
+      setMessage('Error in Registration. Please try again.');
+      console.error('Error:', error);
+    }
+  };
+
+  {/*const handleSubmit = async () => {
     try {
       const promises = vehicles.map(async (vehicle) => {
         const { register_no, sv } = vehicle;
@@ -80,6 +120,7 @@ const VregisterScreen1 = () => {
     }
     
   };
+*/}
   
 
   return (

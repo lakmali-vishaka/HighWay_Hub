@@ -284,6 +284,7 @@ const styles = StyleSheet.create({
   },
   marquee: {
     fontSize: 12,
-    marginTop:10,
+    marginTop:20,
+    marginBottom:10,
   },
 });
