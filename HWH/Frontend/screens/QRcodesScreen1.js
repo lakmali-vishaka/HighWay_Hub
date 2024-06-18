@@ -14,6 +14,7 @@ export default function QRcodesScreen1() {
   const navigation = useNavigation();
   const [refreshing, setRefreshing] = useState(false);  //refresh
   const scrollViewRef = useRef(null); //refresh
+  const timeoutRef = useRef(null);
   const URL = CONFIG.CONNECTION_URL;
 
   const [vehicles, setVehicles] = useState([]);
@@ -65,9 +66,15 @@ export default function QRcodesScreen1() {
   }, []);
 
   const handleChangeVehicle = async (vehicle) => {
-  setSelectedVehicle(vehicle);
+    setSelectedVehicle(vehicle);
+    //setEntrance('');
+    //setExit('');
+    //setTicketAmount(null);
+    await AsyncStorage.removeItem('ticketAmount')
   try {
     await AsyncStorage.setItem('selectedVehicle', JSON.stringify(vehicle));
+    setTicketAmount(null);
+    //alert('Your Journey Not Started.');
   } catch (error) {
     console.error('Error saving selected vehicle:', error);
   }
@@ -86,14 +93,17 @@ export default function QRcodesScreen1() {
         if (response.data.isValid) {
           const fetchedEntrance = response.data.entrance;
           setEntrance(fetchedEntrance);
+          
+          //await AsyncStorage.removeItem('ExitMessage');
           await AsyncStorage.setItem('Entrance', fetchedEntrance);
           await AsyncStorage.setItem('EntranceMessage', `Your vehicle has entered the highway from ${fetchedEntrance} entrance`);  //test123
+
         } else {
           alert('Vehicle Not Found', 'The vehicle number is not registered.');
         }
       } catch (error) {
-        alert('Your Journey Not Started.');
-        await AsyncStorage.removeItem('ExitMessage');
+        //alert('Your Journey Not Started.');
+        //await AsyncStorage.removeItem('ExitMessage');
       }
     };
 
@@ -111,14 +121,16 @@ export default function QRcodesScreen1() {
       if (response.data.isValid) {
         const fetchedExit = response.data.exit;
         setExit(fetchedExit);
+        //await AsyncStorage.removeItem('EntranceMessage');
         await AsyncStorage.setItem('Exit', fetchedExit);
-        await AsyncStorage.setItem('EntranceMessage', ` Your vehicle has exited the highway from ${fetchedExit} exit`);  //test123
+        await AsyncStorage.setItem('ExitMessage', ` Your vehicle has exited the highway from ${fetchedExit} exit`);  //test123
+        await AsyncStorage.removeItem('EntranceMessage');
       } else {
         alert('Vehicle Not Found', 'The vehicle number is not registered.');
       }
     } catch (error) {
       //alert('Welcome ! yourjourney started have a safe journey.');
-      await AsyncStorage.removeItem('EntranceMessage');
+      //await AsyncStorage.removeItem('EntranceMessage');
     }
   };
 
@@ -147,17 +159,38 @@ export default function QRcodesScreen1() {
     if (Entrance && Exit) {
       checkTicketValidity();
     }
+    //setTicketAmount(null)
   }, [Entrance, Exit]);
 
   //refresh
   const onRefresh = async () => {
     setRefreshing(true);
-    // Call the data fetching function here
-    await fetchEntranceFromBackend();
-    await fetchExitFromBackend();
+    if (Entrance){
+      await fetchExitFromBackend();
+      alert('You have come to the end of your journey. Thankyou.');
+      //await AsyncStorage.setItem('ExitMessage', ` Your vehicle has exited the highway from ${fetchedExit} exit`);  //test123
+    }
+    if (!Entrance){
+      await fetchEntranceFromBackend();
+      alert('Welcome ! your journey started. Have a safe journey.');
+      //await AsyncStorage.setItem('EntranceMessage', `Your vehicle has entered the highway from ${fetchedEntrance} entrance`);  //test123
+    }
+    
     setRefreshing(false);
   };
   //refresh
+
+  const handleContinue = async () => {
+    navigation.push('PaymentAmount');
+  };
+  const newjourney = async () => {
+    setEntrance('');
+    setExit('');
+    await AsyncStorage.removeItem('Entrance');
+    await AsyncStorage.removeItem('Exit');
+    setTicketAmount(null)
+    alert('Your are ready for your next Journey.');
+  };
 
   return (
     <View style={{ flex: 1, backgroundColor: '#fff', marginTop: 25 }}>
@@ -217,9 +250,16 @@ export default function QRcodesScreen1() {
         <Animated.Text style={{ color: '#080742', fontSize: 18, paddingTop: 20, alignSelf: 'center' }}>Exit: {Exit}</Animated.Text>
 
         {ticketAmount !== null && (
-          <TouchableOpacity style={{ alignSelf: 'center' }} onPress={() => navigation.push('PaymentAmount')}>
+          <TouchableOpacity style={{ alignSelf: 'center' }} onPress={handleContinue}>
             <View style={{ backgroundColor: '#080742', marginTop: 20, borderRadius: 60, alignItems: 'center', height: 40, width: 300 }}>
               <Text style={{ color: 'white', fontSize: 18, marginTop: 5, fontWeight: 'bold' }}>Continue</Text>
+            </View>
+          </TouchableOpacity>
+        )}
+        {ticketAmount == null && Exit && Entrance &&(
+          <TouchableOpacity style={{ alignSelf: 'center' }} onPress={newjourney}>
+            <View style={{ backgroundColor: '#080742', marginTop: 20, borderRadius: 60, alignItems: 'center', height: 40, width: 300 }}>
+              <Text style={{ color: 'white', fontSize: 18, marginTop: 5, fontWeight: 'bold' }}>Start New Journey</Text>
             </View>
           </TouchableOpacity>
         )}

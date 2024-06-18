@@ -1,4 +1,4 @@
-import { View, Text, Image, TextInput, TouchableOpacity, ScrollView } from 'react-native'
+import { View, Text, Image, TextInput, TouchableOpacity, ScrollView, StyleSheet } from 'react-native'
 import React from 'react'
 import { StatusBar } from 'expo-status-bar'
 import Animated,{ FadeIn, FadeInUp, FadeInDown } from 'react-native-reanimated';
@@ -12,16 +12,16 @@ export default function PaymentScreen2() {
     <View style={{height:'100%', width:'100%', backgroundColor:'white', marginTop:25}}>
       
         <StatusBar style='dark'/>
-        <View className="bg-blue-950 w-full p-4 absolute flex-row justify-between" style={{backgroundColor:'#080742'}}>
-          <Icon name="arrow-left" size={18} color="#ffff" className="pt-1.5" onPress={()=> navigation.push('Payment1')}/>
-          <Text className="text-center font-bold text-xl" style={{color:'#FF6F00'}}>   HighWay Hub</Text>
-          <TouchableOpacity style={{padding:5}} onPress={()=> navigation.push('user')}>
-            <Image source={require('../assets/images/profile.jpg')} className="w-6 h-6 rounded-3xl"/>
+        <View style={styles.header}>
+          <Icon name="arrow-left" size={18} color="#ffff" onPress={() => navigation.push('Payment1')} />
+          <Text style={styles.title}>HighWay Hub</Text>
+          <TouchableOpacity style={styles.profileIcon} onPress={() => navigation.push('user')}>
+            <Image source={require('../assets/images/profile.jpg')} style={styles.profileImage} />
           </TouchableOpacity>
         </View>
 
-        <View className="bg-orange-400 w-full p-1 mt-20 flex-row justify-center" style={{backgroundColor:'#FF6F00'}}>
-          <Text className="text-blue-950 text-center font-bold text-lg" style={{color:'#080742'}}>Payment Methods</Text>
+        <View className="w-full p-1 mt-5 flex-row justify-center" style={{backgroundColor:'#FF6F00'}}>
+          <Text className="text-center font-bold text-lg" style={{color:'#080742'}}>Payment Methods</Text>
         </View>
 
         <Animated.Text style={{left:'5%',marginTop:30,color:'#022043'}} entering={FadeInDown.duration(1000).springify()}>Enter Card Details...</Animated.Text>
@@ -52,3 +52,30 @@ export default function PaymentScreen2() {
     
   )
 }
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: '#fff',
+    marginTop: 25,
+  },
+  header: {
+    flexDirection: 'row',
+    backgroundColor: '#080742',
+    padding: 15,
+    justifyContent: 'space-between',
+    alignItems: 'center',
+  },
+  title: {
+    color: '#FF6F00',
+    fontSize: 20,
+  },
+  profileIcon: {
+    padding: 5,
+  },
+  profileImage: {
+    width: 30,
+    height: 30,
+    borderRadius: 15,
+  },
+
+});

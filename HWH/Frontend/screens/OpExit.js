@@ -99,7 +99,9 @@ export default function OpExit() {
       console.log(responseData); // Log the response from the backend
       setMessage('User data stored successfully');
       AsyncStorage.setItem('Exit', Exit_gate);
-      navigation.navigate('OpQrpage');
+      setTimeout(() => {
+        navigation.push('OpQrpage');
+      }, 2000);
     })
     .catch(error => {
       console.error('Error:', error);
@@ -177,11 +179,11 @@ export default function OpExit() {
 
 
 )}
-<TouchableOpacity style={{alignSelf:'center'}} onPress={()=> navigation.push('OpWS')}>
+      {/*<TouchableOpacity style={{alignSelf:'center'}} onPress={()=> navigation.push('OpWS')}>
         <View style={{backgroundColor: '#080742',marginTop:40,borderRadius:60,alignItems:'center',height:40,width:300}}>
           <Text style={{color:'white',fontSize:18,marginTop:5,fontWeight:'bold'}}>Payment Status</Text>
         </View>
-      </TouchableOpacity>
+      </TouchableOpacity>*/}
     </View>
   );
 }
