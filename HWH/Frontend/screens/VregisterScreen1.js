@@ -180,7 +180,7 @@ const VregisterScreen1 = () => {
           <Text style={{ color: 'white', fontWeight: 'bold', alignSelf: 'center' }}>Add Vehicle</Text>
         </TouchableOpacity>
 
-        <TouchableOpacity onPress={handleSubmit} style={{ backgroundColor: '#080742', borderRadius: 60, paddingVertical: 10, paddingHorizontal: 20, marginTop: 20, width: 300,alignSelf:'center'}}>
+        <TouchableOpacity onPress={handleSubmit} style={{ backgroundColor: '#080742', borderRadius: 60, paddingVertical: 10, paddingHorizontal: 20, marginTop: 20,marginBottom:20, width: 300,alignSelf:'center'}}>
           <Text style={{ color: 'white', fontWeight: 'bold', alignSelf: 'center' }}>Register All Vehicles</Text>
         </TouchableOpacity>
 

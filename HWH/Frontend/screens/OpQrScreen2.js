@@ -97,7 +97,9 @@ export default function OpQrScreen2() {
       console.log(responseData); // Log the response from the backend
       setMessage('User data stored successfully');
       AsyncStorage.setItem('Entrance', Entrance_gate);
-      navigation.navigate('OpQrpage');
+      setTimeout(() => {
+        navigation.push('OpQrpage');
+      }, 2000);
     })
     .catch(error => {
       console.error('Error:', error);

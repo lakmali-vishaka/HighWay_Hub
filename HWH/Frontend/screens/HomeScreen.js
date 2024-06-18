@@ -19,9 +19,9 @@ export default function HomeScreen() {
       try {
         const message1 = await AsyncStorage.getItem('EntranceMessage');
         const message2 = await AsyncStorage.getItem('ExitMessage');
-        if (message1 !== null) {
+        if (message1) {
           setEntranceMessage(message1);
-        } else if ((message1 == null) && (message2 !== null)) {
+        } else{
           setExitMessage(message2);
         }
       } catch (error) {
@@ -170,7 +170,7 @@ export default function HomeScreen() {
         </TouchableOpacity>
 
         <View style={styles.iconContainer}>
-          <TouchableOpacity onPress={() => navigation.navigate('AIhelp')}>
+          <TouchableOpacity onPress={() => navigation.navigate('C1')}>
             <MaterialCommunityIcons name="robot-confused-outline" size={60} color="#FF6F00" />
           </TouchableOpacity>
         </View>
@@ -182,7 +182,6 @@ export default function HomeScreen() {
 
 const styles = StyleSheet.create({
   container: {
-    
     justifyContent: 'center',
     alignItems: 'center',
     marginTop: 0
@@ -204,6 +203,7 @@ const styles = StyleSheet.create({
     width: '100%',
     position: 'absolute',
     bottom: 0,
+    marginBottom:-2
   },
   logo: {
     width: 200,
@@ -256,6 +256,8 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     borderRadius:10, 
     marginBottom:8,
+    padding:3,
+    paddingLeft:0,
     width:340,
     height:70,
     borderColor: '#FF6F00',

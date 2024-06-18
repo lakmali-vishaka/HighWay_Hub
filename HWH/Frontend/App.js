@@ -20,13 +20,14 @@ import OpQrScreen1 from './screens/OpQrScreen1';
 import ResentTiket14 from './screens/ResentTiket14';
 import OpQrScreen2 from './screens/OpQrScreen2';
 import UserProfileScreen from './screens/UserProfileScreen';
-import AIScreen from './screens/AIScreen';
 import EditProfileScreen from './screens/EditProfileScreen';
 import OPProfileScreen from './screens/OPProfileScreen';
 import OpExit from './screens/OpExit.js';
 import WaitingScreen  from './screens/WaitingScreen.js';
 import PaymentFailed from './screens/PaymentFailed';
-import Test_1 from './screens/Test_1';
+import RegisteredVehicles from './screens/RegisteredVehicles';
+import ChatScreen from './screens/ChatScreen';
+import ChatBubble from './screens/ChatBubble';
 
 
 const Stack = createNativeStackNavigator();
@@ -36,7 +37,7 @@ function App() {
   
   return (
     <NavigationContainer>
-      <Stack.Navigator initialRouteName='StartingScreen' screenOptions={{ headerShown: false }}>
+      <Stack.Navigator initialRouteName='StaartingScreen' screenOptions={{ headerShown: false }}>
         <Stack.Screen name="StartingScreen" component={StartingScreen} />
         <Stack.Screen name="Begin" component={BeginScreen} />
         <Stack.Screen name="SignUp" component={SignupScreen} />
@@ -55,13 +56,14 @@ function App() {
         <Stack.Screen name="PaymentStatus" component={PaymentStatus} />
         <Stack.Screen name="qr2" component={OpQrScreen2}/>
         <Stack.Screen name="user" component={UserProfileScreen}/>
-        <Stack.Screen name="AIhelp" component={AIScreen}/>
         <Stack.Screen name="Edit" component={EditProfileScreen}/>
         <Stack.Screen name="operator" component={OPProfileScreen}/>
         <Stack.Screen name="OpExit" component={OpExit}/>
         <Stack.Screen name="OpWS" component={WaitingScreen}/>
         <Stack.Screen name="PaymentF" component={PaymentFailed} />
-        <Stack.Screen name="T1" component={Test_1} />
+        <Stack.Screen name="T1" component={RegisteredVehicles} />
+        <Stack.Screen name="C1" component={ChatScreen} />
+        <Stack.Screen name="C2" component={ChatBubble} />
 
       </Stack.Navigator>
     </NavigationContainer>
