@@ -195,6 +195,7 @@ export default function ResentTiket14() {
           {selectedVehicle && (
         <View>
           <Text style={styles.ticketText}>Vehicle number: {selectedVehicle.register_no}</Text>
+          <Text style={styles.ticketText}>Vehicle number: {selectedVehicle.sv}</Text>
           
         </View>
       )}
@@ -255,11 +256,11 @@ const styles = StyleSheet.create({
   },
   ticketText: {
     fontSize: 16,
-    marginTop: 18,
+    marginTop: 15,
   },
   ticketText1: {
     fontSize: 12,
-    marginTop: 40,
+    marginTop: 30,
     textAlign:'center'
   },
   ticketText2: {

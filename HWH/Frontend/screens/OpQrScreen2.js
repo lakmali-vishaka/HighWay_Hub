@@ -140,7 +140,7 @@ export default function OpQrScreen2() {
         <View style={styles.barcodebox}>
           <BarCodeScanner
             onBarCodeScanned={scanned ? undefined : handleBarCodeScanned}
-            style={{ height: 500, width: 300 }} />
+            style={{ height: 500, width: 250,}} />
         </View>
         <Text style={styles.maintext}>{text}</Text>
         {scanned && <Button title={'Scan again?'} onPress={() => setScanned(false)} color='#080742' />}
@@ -158,9 +158,10 @@ export default function OpQrScreen2() {
           
         >
           <Picker.Item label="Select gate" value="" color={'gray'} />
-          <Picker.Item label="Imaduwa" value="imaduwa" color='#002043' /> 
-          <Picker.Item label="Pinnaduwa" value="pinnaduwa" color='#002043' />
-          <Picker.Item label="Kokmaduwa" value="kokmaduwa" color='#002043' />
+          <Picker.Item label="Imaduwa" value="imaduwa" color='#080742' /> 
+          <Picker.Item label="Pinnaduwa" value="pinnaduwa" color='#080742' />
+          <Picker.Item label="Kokmaduwa" value="kokmaduwa" color='#080742' />
+          <Picker.Item label="Beddegama" value="Beddegama" color='#080742' />
         
         </Picker>
       </View>
@@ -202,6 +203,9 @@ const styles = StyleSheet.create({
   maintext: {
     fontSize: 16,
     margin: 20,
+    color:'#FF6F00',
+    width:90,
+    textAlign:'center'
   },
   barcodebox: {
     alignItems: 'center',
