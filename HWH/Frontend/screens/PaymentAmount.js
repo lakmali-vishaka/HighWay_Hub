@@ -1,8 +1,8 @@
 import { useStripe } from "@stripe/stripe-react-native";
-import { View, Text, TextInput, Button, Alert } from 'react-native';
-import React, { useState, useEffect } from 'react';
+import { View, Text, TextInput, Button, Alert, BackHandler } from 'react-native';
+import React, { useState, useEffect, useCallback } from 'react';
 import { StatusBar } from 'expo-status-bar';
-import { useNavigation } from '@react-navigation/native';
+import { useNavigation, useFocusEffect } from '@react-navigation/native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import CONFIG from '../config';
 
@@ -69,6 +69,19 @@ const PaymentAmount = () => {
    
     getTicketAmount();
   }, []);
+
+  useFocusEffect(
+    useCallback(() => {
+      const onBackPress = () => {
+        // Disable back button
+        return true;
+      };
+
+      BackHandler.addEventListener('hardwareBackPress', onBackPress);
+
+      return () => BackHandler.removeEventListener('hardwareBackPress', onBackPress);
+    }, [])
+  );
 
   
 

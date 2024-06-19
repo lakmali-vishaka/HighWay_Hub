@@ -168,9 +168,9 @@ const VregisterScreen1 = () => {
                   style={{ height: 60, width: 280, }}
                 >
                   <Picker.Item label="Select Type" value="" color={'gray'} />
-                  <Picker.Item label="Type 1" value="type 1" color='#080742' />
-                  <Picker.Item label="Type 2" value="type 2" color='#080742' />
-                  <Picker.Item label="Type 3" value="type 3" color='#080742' />
+                  <Picker.Item label="Type 1" value="Type 1" color='#080742' />
+                  <Picker.Item label="Type 2" value="Type 2" color='#080742' />
+                  <Picker.Item label="Type 3" value="Type 3" color='#080742' />
                 </Picker>
               </View>
             </View>

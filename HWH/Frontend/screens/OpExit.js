@@ -161,10 +161,10 @@ export default function OpExit() {
           
         >
           <Picker.Item label="Select gate" value="" color={'gray'} />
-          <Picker.Item label="Imaduwa" value="imaduwa" color='#002043' />
-          <Picker.Item label="Pinnaduwa" value="pinnaduwa" color='#002043' />
-          <Picker.Item label="Beddegama" value="beddegama" color='#002043' />
-          <Picker.Item label="Kokmaduwa" value="kokmaduwa" color='#002043' />
+          <Picker.Item label="Imaduwa" value="Imaduwa" color='#002043' />
+          <Picker.Item label="Pinnaduwa" value="Pinnaduwa" color='#002043' />
+          <Picker.Item label="Beddegama" value="Beddegama" color='#002043' />
+          <Picker.Item label="Kokmaduwa" value="Kokmaduwa" color='#002043' />
         </Picker>
         
       </View>
@@ -179,11 +179,11 @@ export default function OpExit() {
 
 
 )}
-      {/*<TouchableOpacity style={{alignSelf:'center'}} onPress={()=> navigation.push('OpWS')}>
+      <TouchableOpacity style={{alignSelf:'center'}} onPress={()=> navigation.push('OpQrpage')}>
         <View style={{backgroundColor: '#080742',marginTop:40,borderRadius:60,alignItems:'center',height:40,width:300}}>
-          <Text style={{color:'white',fontSize:18,marginTop:5,fontWeight:'bold'}}>Payment Status</Text>
+          <Text style={{color:'white',fontSize:18,marginTop:5,fontWeight:'bold'}}>Next Vehicle</Text>
         </View>
-      </TouchableOpacity>*/}
+      </TouchableOpacity>
     </View>
   );
 }
@@ -215,7 +215,10 @@ const styles = StyleSheet.create({
   maintext: {
     fontSize: 16,
     margin: 20,
-    color:'#080742'
+    color:'#FF6F00',
+    width:90,
+
+    textAlign: 'center'
   },
   barcodebox: {
     alignItems: 'center',
