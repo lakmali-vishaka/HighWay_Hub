@@ -99,9 +99,9 @@ export default function OpExit() {
       console.log(responseData); // Log the response from the backend
       setMessage('User data stored successfully');
       AsyncStorage.setItem('Exit', Exit_gate);
-      setTimeout(() => {
-        navigation.push('OpQrpage');
-      }, 2000);
+      //setTimeout(() => {
+        //navigation.push('OpQrpage');
+      //}, 2000);
     })
     .catch(error => {
       console.error('Error:', error);
@@ -180,7 +180,7 @@ export default function OpExit() {
 
 )}
       <TouchableOpacity style={{alignSelf:'center'}} onPress={()=> navigation.push('OpQrpage')}>
-        <View style={{backgroundColor: '#080742',marginTop:40,borderRadius:60,alignItems:'center',height:40,width:300}}>
+        <View style={{backgroundColor: '#080742',marginTop:20,borderRadius:60,alignItems:'center',height:40,width:300}}>
           <Text style={{color:'white',fontSize:18,marginTop:5,fontWeight:'bold'}}>Next Vehicle</Text>
         </View>
       </TouchableOpacity>
@@ -216,7 +216,7 @@ const styles = StyleSheet.create({
     fontSize: 16,
     margin: 20,
     color:'#FF6F00',
-    width:90,
+    width:160,
 
     textAlign: 'center'
   },
@@ -233,7 +233,7 @@ const styles = StyleSheet.create({
   pickerContainer: {
     backgroundColor: '#E0E0E0',
     width: 300,
-    marginTop: 50,
+    marginTop: 40,
     alignSelf: 'center',
     borderRadius: 20,
     height: 60,
