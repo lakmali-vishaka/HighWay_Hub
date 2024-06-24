@@ -204,7 +204,7 @@ const styles = StyleSheet.create({
     fontSize: 16,
     margin: 20,
     color:'#FF6F00',
-    width:90,
+    width:180,
     textAlign:'center'
   },
   barcodebox: {
