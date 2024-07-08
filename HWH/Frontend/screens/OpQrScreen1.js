@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, Text, StyleSheet, Image, TouchableOpacity } from 'react-native';
+import { View, Text, StyleSheet, Image, TouchableOpacity} from 'react-native';
 import { StatusBar } from 'expo-status-bar';
 import { useNavigation } from '@react-navigation/native';
 import Icon from 'react-native-vector-icons/FontAwesome';
@@ -13,8 +13,9 @@ export default function OpQrScreen1() {
   const handleOptionChange = (option) => {
     setSelectedOption(option);
   };
-
+  
   const handleScanQR = () => {
+    
     if (selectedOption === 'Operator in Entrance') {
       navigation.push('qr2'); // Navigate to qr2 screen if option is "Operator in Entrance"
     } else if (selectedOption === 'Operator in Exit') {
@@ -33,6 +34,24 @@ export default function OpQrScreen1() {
         </TouchableOpacity>
       </View>
 
+      {/* Checkbox options for selecting gate type
+      <View style={styles.checkboxContainer}>
+        <View style={styles.checkboxOption}>
+          <CheckBox
+            value={selectedOption === 'Operator in Entrance'}
+            onValueChange={() => handleOptionChange('Operator in Entrance')}
+          />
+          <Text style={styles.checkboxLabel}>Operator at Entrance</Text>
+        </View>
+        <View style={styles.checkboxOption}>
+          <CheckBox
+            value={selectedOption === 'Operator in Exit'}
+            onValueChange={() => handleOptionChange('Operator in Exit')}
+          />
+          <Text style={styles.checkboxLabel}>Operator at Exit</Text>
+        </View>
+      </View> */}
+    
       {/* Dropdown menu for selecting option */}
       <View style={styles.pickerContainer}>
         <Picker
@@ -44,7 +63,7 @@ export default function OpQrScreen1() {
           <Picker.Item label="Operator at Entrance" value="Operator in Entrance" color='#080742' />
           <Picker.Item label="Operator at Exit" value="Operator in Exit" color='#080742' />
         </Picker>
-      </View>
+      </View> 
 
       <TouchableOpacity style={styles.scanButton} onPress={handleScanQR}>
         <View style={styles.scanButtonContent}>
@@ -81,7 +100,7 @@ const styles = StyleSheet.create({
   pickerContainer: {
     backgroundColor: '#E0E0E0',
     width: 300,
-    marginTop: 80,
+    marginTop: 50,
     alignSelf: 'center',
     borderRadius: 20,
     height: 60,
@@ -95,7 +114,7 @@ const styles = StyleSheet.create({
   scanButton: {
     height: 80,
     width: 300,
-    marginTop: 20,
+    marginTop: 50,
     alignSelf: 'center',
   },
   scanButtonContent: {

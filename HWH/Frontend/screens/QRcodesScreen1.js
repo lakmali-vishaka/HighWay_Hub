@@ -23,34 +23,6 @@ export default function QRcodesScreen1() {
   const [Exit, setExit] = useState('');
   const [ticketAmount, setTicketAmount] = useState(null);
 
-  {/*useEffect(() => {
-    const fetchVehicles = async () => {
-      try {
-        const NIC = await AsyncStorage.getItem('userNIC');
-        if (NIC) {
-          fetchVehiclesByNIC(NIC);
-        }
-      } catch (error) {
-        console.error('Error retrieving NIC:', error);
-      }
-    };
-    fetchVehicles();
-  }, []);
-
-  const fetchVehiclesByNIC = async (NIC) => {
-    try {
-      const response = await axios.post(`${URL}/vehicle/get-vehicles`, { NIC });
-      if (response.data.isValid) {
-        setVehicles(response.data.vehicles);
-        await AsyncStorage.setItem('vehicles', JSON.stringify(response.data.vehicles));
-      } else {
-        alert('No vehicles found for this NIC.');
-      }
-    } catch (error) {
-      console.error('Error fetching vehicles:', error);
-    }
-  };*/}
-
   useEffect(() => {
     const fetchVehicles = async () => {
       try {
@@ -67,14 +39,16 @@ export default function QRcodesScreen1() {
 
   const handleChangeVehicle = async (vehicle) => {
     setSelectedVehicle(vehicle);
-    //setEntrance('');
-    //setExit('');
+    setEntrance('');
+    setExit('');
     //setTicketAmount(null);
     await AsyncStorage.removeItem('ticketAmount')
+    await AsyncStorage.removeItem('Entrance');
+    await AsyncStorage.removeItem('Exit');
   try {
     await AsyncStorage.setItem('selectedVehicle', JSON.stringify(vehicle));
     setTicketAmount(null);
-    //alert('Your Journey Not Started.');
+    
   } catch (error) {
     console.error('Error saving selected vehicle:', error);
   }
@@ -86,6 +60,7 @@ export default function QRcodesScreen1() {
     : '';
 
     const fetchEntranceFromBackend = async () => {
+      await AsyncStorage.removeItem('Exit');
       try {
         const response = await axios.post(`${URL}/vehicle/get-entrance`, { Vehicle_number: selectedVehicle.register_no },{
         timeout: 3000 // Set timeout to 3 seconds (adjust as needed)
@@ -93,25 +68,22 @@ export default function QRcodesScreen1() {
         if (response.data.isValid) {
           const fetchedEntrance = response.data.entrance;
           setEntrance(fetchedEntrance);
-          
-          //await AsyncStorage.removeItem('ExitMessage');
+          //await AsyncStorage.removeItem('Exit');
           await AsyncStorage.setItem('Entrance', fetchedEntrance);
           await AsyncStorage.setItem('EntranceMessage', `Your vehicle has entered the highway from ${fetchedEntrance} entrance`);  //test123
-
         } else {
           alert('Vehicle Not Found', 'The vehicle number is not registered.');
         }
       } catch (error) {
-        //alert('Your Journey Not Started.');
-        //await AsyncStorage.removeItem('ExitMessage');
+        
       }
     };
 
-  useEffect(() => {
+  {/*useEffect(() => {
     if (selectedVehicle) {
       fetchEntranceFromBackend();
     }
-  }, [selectedVehicle]);
+  }, [selectedVehicle]);*/}
 
   const fetchExitFromBackend = async () => {
     try {
@@ -121,7 +93,6 @@ export default function QRcodesScreen1() {
       if (response.data.isValid) {
         const fetchedExit = response.data.exit;
         setExit(fetchedExit);
-        //await AsyncStorage.removeItem('EntranceMessage');
         await AsyncStorage.setItem('Exit', fetchedExit);
         await AsyncStorage.setItem('ExitMessage', ` Your vehicle has exited the highway from ${fetchedExit} exit`);  //test123
         await AsyncStorage.removeItem('EntranceMessage');
@@ -129,16 +100,15 @@ export default function QRcodesScreen1() {
         alert('Vehicle Not Found', 'The vehicle number is not registered.');
       }
     } catch (error) {
-      //alert('Welcome ! yourjourney started have a safe journey.');
-      //await AsyncStorage.removeItem('EntranceMessage');
+      
     }
   };
 
-  useEffect(() => {
+  {/*useEffect(() => {
     if (selectedVehicle) {
       fetchExitFromBackend();
     }
-  }, [selectedVehicle]);
+  }, [selectedVehicle]);*/}
 
   const checkTicketValidity = async () => {
     try {
@@ -165,17 +135,15 @@ export default function QRcodesScreen1() {
   //refresh
   const onRefresh = async () => {
     setRefreshing(true);
-    if (Entrance){
+    if (Entrance && !Exit ){
       await fetchExitFromBackend();
       alert('You have come to the end of your journey. Thankyou.');
-      //await AsyncStorage.setItem('ExitMessage', ` Your vehicle has exited the highway from ${fetchedExit} exit`);  //test123
     }
     if (!Entrance){
       await fetchEntranceFromBackend();
+      await AsyncStorage.removeItem('paymentStatus');
       alert('Welcome ! your journey started. Have a safe journey.');
-      //await AsyncStorage.setItem('EntranceMessage', `Your vehicle has entered the highway from ${fetchedEntrance} entrance`);  //test123
     }
-    
     setRefreshing(false);
   };
   //refresh
