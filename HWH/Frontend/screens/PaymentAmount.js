@@ -5,6 +5,7 @@ import { StatusBar } from 'expo-status-bar';
 import { useNavigation, useFocusEffect } from '@react-navigation/native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import CONFIG from '../config';
+import PaymentStatus from "./PaymentStatus";
 
 
 const PaymentAmount = () => {
@@ -14,14 +15,28 @@ const PaymentAmount = () => {
   const stripe = useStripe();
   const [ticketAmount, setTicketAmount] = useState(null);
 
+  /////
+  useEffect(() => {
+    const fetchTicketAmount = async () => {
+        const amount = await AsyncStorage.getItem('ticketprice');
+        setTicketAmount(parseFloat(amount)); // Parse the ticket price from storage
+    };
+    fetchTicketAmount();
+}, []);
+  /////
+
   const paying = async () => {
       try {
+        /////
+        const amount = ticketAmount * 100;
+        /////
         //sending request
         const response = await fetch (`${URL}/pay`, { //here, put your own phone's IP address to make it work.... http://--:--:--:--:8080/pay
             method: 'POST',
             headers: {
                 "Content-Type": "application/json",
             },
+            body: JSON.stringify({ amount })
         });
 
         const data = await response.json();
@@ -40,8 +55,7 @@ const PaymentAmount = () => {
         });
 
         if(presentSheet.error) return Alert.alert(presentSheet.error.message);
-        await AsyncStorage.setItem('paymentStatus', 'Payment Completed, Thank you!');
-        
+        await AsyncStorage.setItem('paymentStatus', 'Payment Completed');
         Alert.alert("Payment Complete, Thank you!");
         navigation.navigate('PaymentStatus');
       
@@ -106,10 +120,6 @@ const PaymentAmount = () => {
     
     <View style={{marginBottom:80}}>
     </View>
-
-    {/*<View style={{width:'70%' , left:'15%', color:"#fff"}}>
-      <Button title="Go Back To Home" onPress={()=> navigation.push('Home')} color="#E0E0E0"/>
-  </View>*/}
 
     </View>
   );

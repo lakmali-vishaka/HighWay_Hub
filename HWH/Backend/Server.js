@@ -17,9 +17,17 @@ const STRIPE_PORT = process.env.PORT || 8080;
 
 // Define the Stripe payment route
 app.post('/pay', async(req, res) => {
+    ////
+    const { amount } = req.body;
+
+    if (!amount) {
+        return res.status(400).json({ message: 'Amount is required' });
+    }
+    ////
+
     try {
       const paymentIntent = await stripe.paymentIntents.create({
-          amount:20000,
+          amount:amount,
           currency: "LKR",
           payment_method_types: ["card"],
       });

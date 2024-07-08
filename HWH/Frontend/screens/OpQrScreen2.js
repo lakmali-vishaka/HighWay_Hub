@@ -20,7 +20,7 @@ export default function OpQrScreen2() {
   const [userData, setUserData] = useState(null);
   const [message, setMessage] = useState('');
 
-
+  
 
   const askForCameraPermission = async () => {
     const { status } = await BarCodeScanner.requestPermissionsAsync();
@@ -60,6 +60,7 @@ export default function OpQrScreen2() {
           console.log('Data exists in the database');
           // Data exists, perform necessary actions
           setUserData({ qrData, type });
+          handleGateChange(selectedGate); //(7/7)
         } else {
           console.log('Data does not exist in the database');
           // Data does not exist, handle accordingly
@@ -158,14 +159,13 @@ export default function OpQrScreen2() {
           
         >
           <Picker.Item label="Select gate" value="" color={'gray'} />
-          <Picker.Item label="Imaduwa" value="imaduwa" color='#080742' /> 
-          <Picker.Item label="Pinnaduwa" value="pinnaduwa" color='#080742' />
-          <Picker.Item label="Kokmaduwa" value="kokmaduwa" color='#080742' />
+          <Picker.Item label="Imaduwa" value="Imaduwa" color='#080742' /> 
+          <Picker.Item label="Pinnaduwa" value="Pinnaduwa" color='#080742' />
+          <Picker.Item label="Kokmaduwa" value="Kokmaduwa" color='#080742' />
           <Picker.Item label="Beddegama" value="Beddegama" color='#080742' />
         
         </Picker>
       </View>
-    
 
       {/* Display message */}
       {message !== '' && (

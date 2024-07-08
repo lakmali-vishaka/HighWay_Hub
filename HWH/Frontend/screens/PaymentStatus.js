@@ -45,7 +45,7 @@ export default function PaymentStatus() {
           <View style={{alignItems:'center',flex:0.5}}>
             <TouchableOpacity style={{padding:20}} onPress={handlePress}>
               <View style={{backgroundColor: '#080742',borderRadius:60,alignItems:'center',height:40,width:300}}>
-                  <Text style={{color:'white',fontSize:18,marginTop:5,fontWeight:'bold'}}>View the Ticket</Text>
+                  <Text style={{color:'white',fontSize:18,marginTop:7,fontWeight:'bold'}}>View the Ticket</Text>
               </View>
             </TouchableOpacity>
           </View>

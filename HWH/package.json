@@ -1,5 +1,7 @@
 {
   "dependencies": {
-    "react-native-custom-qr-codes-expo": "^2.2.0"
+    "@react-native-async-storage/async-storage": "^1.23.1",
+    "react-native-custom-qr-codes-expo": "^2.2.0",
+    "react-native-image-picker": "^7.1.2"
   }
 }

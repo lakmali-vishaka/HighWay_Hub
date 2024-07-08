@@ -181,7 +181,7 @@ export default function OpExit() {
 )}
       <TouchableOpacity style={{alignSelf:'center'}} onPress={()=> navigation.push('OpQrpage')}>
         <View style={{backgroundColor: '#080742',marginTop:20,borderRadius:60,alignItems:'center',height:40,width:300}}>
-          <Text style={{color:'white',fontSize:18,marginTop:5,fontWeight:'bold'}}>Next Vehicle</Text>
+          <Text style={{color:'white',fontSize:18,marginTop:7,fontWeight:'bold'}}>Next Vehicle</Text>
         </View>
       </TouchableOpacity>
     </View>

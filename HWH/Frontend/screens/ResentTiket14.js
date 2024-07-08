@@ -9,6 +9,7 @@ import MarqueeText from 'react-native-marquee';
 
 export default function ResentTiket14() {
   const navigation = useNavigation();
+  const [paymentStatus, setPaymentStatus] = useState('');
   const [P, setP] = useState('');
   const [p2, setP2] = useState('');
   const [Entrance, setEntrance] = useState('');
@@ -20,7 +21,20 @@ export default function ResentTiket14() {
   const [selectedVehicle, setSelectedVehicle] = useState(null);
   const [marqueeColor, setMarqueeColor] = useState('#000');
 
+  useEffect(() => {
+    const fetchPaymentStatus = async () => {
+      try {
+        const status = await AsyncStorage.getItem('paymentStatus');
+        if (status) {
+          setPaymentStatus(status);
+        }
+      } catch (error) {
+        console.error('Error retrieving payment status:', error);
+      }
+    };
 
+    fetchPaymentStatus();
+  }, []);
   {/*useEffect(() => {
     const getData = async () => {
       try {
@@ -201,8 +215,14 @@ export default function ResentTiket14() {
       )}
       
           <Text style={styles.ticketText}>Amount: RS(LKR) {ticketAmount}.00</Text>
-          <Text style={styles.ticketText1}>For Any Inquiry: 1969</Text>
+          
+          {paymentStatus ? (
+        <Text style={styles.paymentStatus}>{paymentStatus}</Text>
+          ) : null}
+
         </View>
+        <Text style={styles.ticketText1}>For Any Inquiry: 1969</Text>
+
       </View>
       <Text style={styles.ticketText4}>Thank You Come Again ! </Text>
       <View style={{marginLeft:15, marginRight:15}}>
@@ -218,6 +238,13 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: '#fff',
     marginTop: 25,
+  },
+  paymentStatus: {
+    textAlign: 'center',
+    color: '#FF6F00',
+    fontSize: 18,
+    fontWeight: 'bold',
+    marginTop: 20,
   },
   header: {
     flexDirection: 'row',
@@ -249,7 +276,7 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     height: 350,
     width: 260,
-    marginTop: 30,
+    marginTop: 15,
     borderWidth: 2, 
     borderColor: '#080742',  
     marginBottom: 5, 
@@ -260,7 +287,7 @@ const styles = StyleSheet.create({
   },
   ticketText1: {
     fontSize: 12,
-    marginTop: 30,
+    marginTop: 10,
     textAlign:'center'
   },
   ticketText2: {
@@ -285,7 +312,7 @@ const styles = StyleSheet.create({
   },
   marquee: {
     fontSize: 12,
-    marginTop:20,
+    marginTop:10,
     marginBottom:10,
   },
 });

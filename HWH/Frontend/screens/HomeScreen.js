@@ -34,7 +34,24 @@ export default function HomeScreen() {
     return () => clearInterval(interval);
   }, []);
   //test123----
+  
+  useEffect(() => {
+    let interval = setInterval(() => {
+      let nextIndex = activeIndex + 1;
+      if (nextIndex >= carouselData.length) {
+        nextIndex = 0;
+      }
+      flatlistRef.current.scrollToIndex({
+        index: nextIndex,
+        animated: true,
+      });
+      setActiveIndex(nextIndex);
+    }, 2000);
 
+    return () => clearInterval(interval);
+  }, [activeIndex]);
+
+  {/*//07-04
   useEffect(() => {
     let interval = setInterval(() => {
       if (activeIndex === carouselData.length - 1) {
@@ -52,6 +69,7 @@ export default function HomeScreen() {
 
     return () => clearInterval(interval);
   }, [activeIndex]);
+//07-04*/}
 
   const carouselData = [
     { id: "01", image: require("../assets/images/img1.jpg") },
@@ -81,7 +99,7 @@ export default function HomeScreen() {
 
   const handleScroll = (event) => {
     const scrollPosition = event.nativeEvent.contentOffset.x;
-    const index = scrollPosition / screenWidth;
+    const index = Math.round(scrollPosition / screenWidth); //const index = scrollPosition / screenWidth;
     setActiveIndex(index);
   };
 
@@ -119,6 +137,7 @@ export default function HomeScreen() {
         horizontal={true}
         pagingEnabled={true}
         onScroll={handleScroll}
+        showsHorizontalScrollIndicator={false}
         style={{margin:7.5, height:180}}
       />
 
