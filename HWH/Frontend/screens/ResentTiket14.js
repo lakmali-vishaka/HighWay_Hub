@@ -16,7 +16,6 @@ export default function ResentTiket14() {
   const [Exit, setExit] = useState('');
   const [currentDate, setCurrentDate] = useState('');
   const [ticketTime, setTicketTime] = useState('');
-  //const [currentTime, setCurrentTime] = useState('');
   const [ticketAmount, setTicketAmount] = useState(null);
   const [selectedVehicle, setSelectedVehicle] = useState(null);
   const [marqueeColor, setMarqueeColor] = useState('#000');
@@ -35,21 +34,6 @@ export default function ResentTiket14() {
 
     fetchPaymentStatus();
   }, []);
-  {/*useEffect(() => {
-    const getData = async () => {
-      try {
-        const storedP = await AsyncStorage.getItem('P');
-        const storedP2 = await AsyncStorage.getItem('p2');
-        if (storedP !== null && storedP2 !== null) {
-          setP(storedP);
-          setP2(storedP2);
-        }
-      } catch (error) {
-        console.error('Error retrieving data:', error);
-      }
-    };
-    getData();
-  }, []);*/}
 
   useEffect(() => {
     const fetchSelectedVehicle = async () => {
@@ -89,16 +73,6 @@ export default function ResentTiket14() {
     fetchExit();
   }, []);
 
-  ///////////////
-  {/*useEffect(() => {
-    const fetchCurrentDate = () => {
-      const now = new Date();
-      const date = now.toDateString();
-      setCurrentDate(date);
-    };
-    fetchCurrentDate();
-  }, []);*/}
-
   useEffect(() => {
     const fetchTicketTime = async () => {
       try {
@@ -111,15 +85,11 @@ export default function ResentTiket14() {
     fetchTicketTime();
   }, []);
 
-  //////////////
-
   useEffect(() => {
     const interval = setInterval(() => {
       const now = new Date();
       const date = now.toDateString();
-      //const time = now.toLocaleTimeString();
       setCurrentDate(date);
-      //setCurrentTime(time);
     }, 1000);
 
     return () => clearInterval(interval);
@@ -131,13 +101,6 @@ export default function ResentTiket14() {
         const storedTicketAmount = await AsyncStorage.getItem('ticketAmount');
         if (storedTicketAmount !== null) {
           setTicketAmount(storedTicketAmount);
-          
-          // Set timeout to clear ticketAmount after 3 minutes
-          {/*
-          setTimeout(async () => {
-            await AsyncStorage.removeItem('ticketAmount');
-            setTicketAmount(null);
-          }, 180000); // 3 minutes in milliseconds*/}
         }
       } catch (error) {
         console.error('Error fetching ticket amount:', error);
@@ -147,22 +110,6 @@ export default function ResentTiket14() {
     fetchTicketAmount();
   }, []);
 
-  {/* useEffect(() => {
-    // Set timeout to clear Entrance after 3 minutes
-    setTimeout(async () => {
-      await AsyncStorage.removeItem('Entrance');
-      setEntrance('');
-    }, 180000); // 3 minutes in milliseconds
-  }, []);
-
- useEffect(() => {
-    // Set timeout to clear Exit after 3 minutes
-    setTimeout(async () => {
-      await AsyncStorage.removeItem('Exit');
-      setExit('');
-    }, 180000); // 3 minutes in milliseconds
-  }, []);
-*/}
   useEffect(() => {
     const getMarqueeColor = () => {
       const day = new Date().getDay();
@@ -187,44 +134,42 @@ export default function ResentTiket14() {
       <View className="w-full p-1 mt-5 flex-row justify-center" style={{backgroundColor:'#FF6F00'}}>
         <Text className="text-center font-bold text-lg" style={{color:'#080742'}}>Recent Ticket</Text>
       </View>
+
       <View style={{marginLeft:15, marginRight:15}}>
         <MarqueeText style={[styles.marquee, { color: marqueeColor }]} duration={5000} loop>
           SOUTHERN EXPRESSWAY [{currentDate}] SOUTHERN EXPRESSWAY 
         </MarqueeText>
       </View>
+
       <View style={styles.ticketContainer}>
         <View style={styles.ticketUpperBox}>
           <View style={styles.ticketBox}>
-          
             <Text style={styles.ticketText2}>SOUTHERN EXPRESSWAY</Text>
             <Text style={styles.ticketText3}>USER FEE TICKET</Text>
           </View>
         </View>
         <View style={styles.ticket}>
-          
           <Text style={styles.ticketText}>Date: {currentDate}</Text>
           <Text style={styles.ticketText}>Time: {ticketTime}</Text>
           <Text style={styles.ticketText}>Entrance Gate: {Entrance}</Text>
           <Text style={styles.ticketText}>Exit Gate: {Exit}</Text>
           {selectedVehicle && (
-        <View>
-          <Text style={styles.ticketText}>Vehicle number: {selectedVehicle.register_no}</Text>
-          <Text style={styles.ticketText}>Vehicle number: {selectedVehicle.sv}</Text>
-          
-        </View>
-      )}
-      
+            <View>
+              <Text style={styles.ticketText}>Vehicle number: {selectedVehicle.register_no}</Text>
+              <Text style={styles.ticketText}>Vehicle number: {selectedVehicle.sv}</Text>
+            </View>
+          )}
           <Text style={styles.ticketText}>Amount: RS(LKR) {ticketAmount}.00</Text>
           
           {paymentStatus ? (
-        <Text style={styles.paymentStatus}>{paymentStatus}</Text>
-          ) : null}
-
+            <Text style={styles.paymentStatus}>{paymentStatus}</Text>
+              ) : null}
         </View>
         <Text style={styles.ticketText1}>For Any Inquiry: 1969</Text>
-
       </View>
+
       <Text style={styles.ticketText4}>Thank You Come Again ! </Text>
+
       <View style={{marginLeft:15, marginRight:15}}>
         <MarqueeText style={[styles.marquee, { color: marqueeColor }]} duration={100} loop>
           SOUTHERN EXPRESSWAY [{currentDate}] SOUTHERN EXPRESSWAY 
@@ -284,11 +229,12 @@ const styles = StyleSheet.create({
   ticketText: {
     fontSize: 16,
     marginTop: 15,
+    marginLeft:15
   },
   ticketText1: {
     fontSize: 12,
     marginTop: 10,
-    textAlign:'center'
+    textAlign:'center',
   },
   ticketText2: {
     fontSize: 16,

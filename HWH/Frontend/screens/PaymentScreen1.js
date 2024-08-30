@@ -47,7 +47,9 @@ export default function PaymentScreen1() {
               </View>
             </TouchableOpacity>
           </Animated.View>
-
+          <View style={{marginTop:50,borderRadius:60,alignItems:'center',height:40,width:350}}>
+              <Text style={{color:'red',fontSize:12,marginTop:5,fontWeight:'bold'}}>** Under development</Text>
+          </View>
     </View>
     
   )

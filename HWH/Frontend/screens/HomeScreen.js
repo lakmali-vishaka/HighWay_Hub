@@ -13,7 +13,6 @@ export default function HomeScreen() {
   const [entranceMessage, setEntranceMessage] = useState(null); //test123
   const [exitMessage, setExitMessage] = useState(null); //test123
 
-  //test123----
   useEffect(() => {
     const fetchMessage = async () => {
       try {
@@ -33,7 +32,6 @@ export default function HomeScreen() {
 
     return () => clearInterval(interval);
   }, []);
-  //test123----
   
   useEffect(() => {
     let interval = setInterval(() => {
@@ -51,33 +49,12 @@ export default function HomeScreen() {
     return () => clearInterval(interval);
   }, [activeIndex]);
 
-  {/*//07-04
-  useEffect(() => {
-    let interval = setInterval(() => {
-      if (activeIndex === carouselData.length - 1) {
-        flatlistRef.current.scrollToIndex({
-          index: 0,
-          animated: true,
-        });
-      } else {
-        flatlistRef.current.scrollToIndex({
-          index: activeIndex + 1,
-          animated: true,
-        });
-      }
-    }, 2000);
-
-    return () => clearInterval(interval);
-  }, [activeIndex]);
-//07-04*/}
-
   const carouselData = [
     { id: "01", image: require("../assets/images/img1.jpg") },
     { id: "02", image: require("../assets/images/img2.png") },
     { id: "03", image: require("../assets/images/img3.png") },
     { id: "04", image: require("../assets/images/img10.jpg") },
     { id: "05", image: require("../assets/images/img4.png") },
-
   ];
 
   const getItemLayout = (data, index) => ({
@@ -122,7 +99,7 @@ export default function HomeScreen() {
     <View style={styles.container}>
       <StatusBar style='dark' />
       <View className="bg-blue-950 w-full p-3 flex-row justify-between" style={{backgroundColor:'#080742',marginTop:30}}>
-        <Text className="text-center font-bold" style={{color:'#FF6F00',fontSize:30}}>   HighWay Hub</Text>
+        <Text className="text-center font-bold" style={{color:'#FF6F00',fontSize:30,marginLeft:20,marginTop:3}}>HighWay Hub</Text>
         <TouchableOpacity style={{padding:10, left:15}} onPress={()=> navigation.push('user')}>
           <Image source={require('../assets/images/profile.jpg')} style={styles.profileImage}/>
         </TouchableOpacity>
@@ -145,15 +122,11 @@ export default function HomeScreen() {
         {renderDotIndicators()}
       </View>
 
-
-      {/*test123 ----*/}
       <View style={styles.content}>
         <Text style={{color:'#FF6F00'}}>Your Journey Status:</Text>
         <Text placeholder='Vehicle Journey Status' editable={false} style={styles.messageText}>
           {exitMessage !== null ? exitMessage : (entranceMessage !== null ? entranceMessage : '')}</Text>
       </View>
-      {/*test123 ----*/}
-
 
       <View style={styles.bottomRectangle}>
         <Image source={require('../assets/images/logo.png')} style={styles.logo} />
@@ -190,7 +163,7 @@ export default function HomeScreen() {
 
         <View style={styles.iconContainer}>
           <TouchableOpacity onPress={() => navigation.navigate('C1')}>
-            <MaterialCommunityIcons name="robot-confused-outline" size={60} color="#FF6F00" />
+            <MaterialCommunityIcons name="robot" size={60} color="#FF6F00" style={{marginBottom:5, marginTop:-5}} />
           </TouchableOpacity>
         </View>
       </View>
@@ -266,9 +239,11 @@ const styles = StyleSheet.create({
     position: 'absolute',
     bottom: -35,
     left: 253,
-    backgroundColor: 'transparent',
-    padding: 10,
-    borderRadius: 5,
+    backgroundColor: '#E0E0E0',
+    borderColor:'#FF6F00',
+    padding: 4,
+    borderRadius: 45,
+    borderWidth: 3,
   },
   content: {
     justifyContent:'center',

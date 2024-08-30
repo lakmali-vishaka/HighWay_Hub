@@ -12,15 +12,12 @@ import CONFIG from '../config';
 export default function OpQrScreen2() {
   const navigation = useNavigation();
   const URL = CONFIG.CONNECTION_URL;
-
   const [hasPermission, setHasPermission] = useState(null);
   const [scanned, setScanned] = useState(false);
   const [text, setText] = useState('Not yet scanned');
   const [Entrance, setEntrance] = useState('');
   const [userData, setUserData] = useState(null);
   const [message, setMessage] = useState('');
-
-  
 
   const askForCameraPermission = async () => {
     const { status } = await BarCodeScanner.requestPermissionsAsync();
@@ -37,9 +34,7 @@ export default function OpQrScreen2() {
 
     try {
       console.log('Received data:', data);
-
       const [qrData, type] = data.split(',').map(part => part.trim()); // Remove leading and trailing whitespace
-      
       const response = await fetch(`${URL}/vehicle/compare-data`, {
         method: 'POST',
         headers: {
@@ -73,7 +68,6 @@ export default function OpQrScreen2() {
     }
   };
   
-
   const handleGateChange = (Entrance_gate) => {
     setEntrance(Entrance_gate);
     if (!userData) {
@@ -107,7 +101,6 @@ export default function OpQrScreen2() {
     });
   };
 
-
   if (hasPermission === null) {
     return (
       <View style={styles.container}>
@@ -130,12 +123,12 @@ export default function OpQrScreen2() {
       <StatusBar style='dark'/>
       {/* Your header component */}
       <View style={styles.header}>
-          <Icon name="arrow-left" size={18} color="#ffff" onPress={() => navigation.push('OpQrpage')} />
-          <Text style={styles.title}>HighWay Hub</Text>
-          <TouchableOpacity style={styles.profileIcon} onPress={() => navigation.push('user')}>
-            <Image source={require('../assets/images/profile.jpg')} style={styles.profileImage} />
-          </TouchableOpacity>
-        </View>
+        <Icon name="arrow-left" size={18} color="#ffff" onPress={() => navigation.push('OpQrpage')} />
+        <Text style={styles.title}>HighWay Hub</Text>
+        <TouchableOpacity style={styles.profileIcon} onPress={() => navigation.push('user')}>
+          <Image source={require('../assets/images/profile.jpg')} style={styles.profileImage} />
+        </TouchableOpacity>
+      </View>
 
       <View style={{ marginTop: -15, alignItems: 'center' }}>
         <View style={styles.barcodebox}>
@@ -145,34 +138,29 @@ export default function OpQrScreen2() {
         </View>
         <Text style={styles.maintext}>{text}</Text>
         {scanned && <Button title={'Scan again?'} onPress={() => setScanned(false)} color='#080742' />}
-        
       </View>
 
       <View style={styles.pickerContainer}>
         {/* Dropdown menu for selecting gate */}
         <Picker
           style={styles.picker}
-          //onValueChange={(itemValue) => console.log(itemValue)}
-          //selectedValue={selectedGate}
           selectedValue={Entrance}
           onValueChange={(itemValue) => handleGateChange(itemValue)}
-          
         >
           <Picker.Item label="Select gate" value="" color={'gray'} />
+          <Picker.Item label="Kokmaduwa" value="Kokmaduwa" color='#080742' />
           <Picker.Item label="Imaduwa" value="Imaduwa" color='#080742' /> 
           <Picker.Item label="Pinnaduwa" value="Pinnaduwa" color='#080742' />
-          <Picker.Item label="Kokmaduwa" value="Kokmaduwa" color='#080742' />
-          <Picker.Item label="Beddegama" value="Beddegama" color='#080742' />
-        
+          <Picker.Item label="Beddegama" value="Beddegama" color='#080742' /> 
         </Picker>
       </View>
 
       {/* Display message */}
       {message !== '' && (
-  <View style={[styles.messageContainer, { alignItems: 'center' }]}>
-    <Text style={[styles.messageText, { color: 'red' }]}>{message}</Text>
-  </View>
-)}
+        <View style={[styles.messageContainer, { alignItems: 'center' }]}>
+          <Text style={[styles.messageText, { color: 'red' }]}>{message}</Text>
+        </View>
+      )}
     </View>
   );
 }

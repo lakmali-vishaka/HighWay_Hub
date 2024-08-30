@@ -37,7 +37,7 @@ function App() {
   
   return (
     <NavigationContainer>
-      <Stack.Navigator initialRouteName='t2' screenOptions={{ headerShown: false }}>
+      <Stack.Navigator initialRouteName='SrartingScreen' screenOptions={{ headerShown: false }}>
         <Stack.Screen name="StartingScreen" component={StartingScreen} />
         <Stack.Screen name="Begin" component={BeginScreen} />
         <Stack.Screen name="SignUp" component={SignupScreen} />
@@ -64,7 +64,7 @@ function App() {
         <Stack.Screen name="T1" component={RegisteredVehicles} />
         <Stack.Screen name="C1" component={ChatScreen} />
         <Stack.Screen name="C2" component={ChatBubble} />
-
+        
       </Stack.Navigator>
     </NavigationContainer>
   );
