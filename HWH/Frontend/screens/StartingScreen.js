@@ -19,8 +19,9 @@ export default function StartingScreen() {
   return (
     <View style={styles.container}>
       <StatusBar style='light'/>
-      <Text style={[styles.mainText]}> HighWay Hub </Text>
-      <Image source={require('../assets/images/logo.png')} style={styles.logo}/>
+      {/*<Text style={[styles.mainText]}> HighWay Hub </Text>
+      <Image source={require('../assets/images/logo.png')} style={styles.logo}/>*/}
+      <Image source={require('../assets/images/logo2.png')} style={styles.logo}/>
       
 
     </View>
@@ -35,28 +36,20 @@ const styles = StyleSheet.create({
       alignItems: 'center',
       justifyContent: 'center',
       backgroundColor: '#080742',
-      
-      
     },
-  
-    
-  
+
     mainText: {
       fontSize: 27,
       fontWeight : 'bold', 
       marginTop: -100,
       color:'#fff',
-      marginTop:50
-      
+      marginTop:50 
     },
 
     logo: {
         width: 200, 
         height: 200,
-
     },
-
-    
 
     });
 

@@ -5,22 +5,18 @@ import {Ionicons} from "react-native-vector-icons";
 const ChatBubble = ({ role, text,onSpeech}) => {
     return(
         <View 
-        style={[
-            styles.chatItem,
-            role === "user" ? styles.userChatItem : styles.modelChatItem,
-
-        ]}
+            style={[
+                styles.chatItem,
+                role === "user" ? styles.userChatItem : styles.modelChatItem,
+            ]}
         >
             <Text style={styles.chatText}>{text}</Text>
             {role === "model" && (
                 <TouchableOpacity onPress={onSpeech} style={styles.speakerIcon}>
                     <Ionicons name="volume-high-outline" size={24} color="#fff"/>
-                     </TouchableOpacity>
+                </TouchableOpacity>
             )}
-
-            </View>
-
-        
+        </View>    
     );
 };
 
@@ -37,7 +33,6 @@ const styles = StyleSheet.create({
         alignSelf: "flex-end",
         backgroundColor: "#080742",
         marginTop:20
-
     },
     modelChatItem:{
         alignSelf: "flex-start",
@@ -46,18 +41,17 @@ const styles = StyleSheet.create({
         borderColor:'#080742',
         borderWidth:1,
         width:300
-
     },
 
     chatText: {
         fontsize:16,
         color:"#fff",
     },
+    
     speakerIcon: {
         position: "absolute",
         bottom:5,
         right:5,
-
     },
 
 });

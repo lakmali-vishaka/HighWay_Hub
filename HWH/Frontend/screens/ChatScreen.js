@@ -5,133 +5,107 @@ import ChatBubble from "../screens/ChatBubble";
 import{speak,isSpeakingAsync,stop}from "expo-speech";
 
 
-
-
 const ChatScreen = ()=> {
   const [chat,setChat] = useState([]);
   const [userInput,setUserInput]=useState("");
   const [loading,setLoading] = useState(null);
   const[error,seterror] = useState(null);
   const[isSpeaking,setSpeaking]=useState(false);
-
   const API_KEY = "AIzaSyC0CJzxkxGi7QPMp7zYiVn4NIO072o6lbQ";
-const handleUserInput = async () => {
 
-  //add use input to chat
-  let updateChat = [
-    ...chat,
-    {
-
-      role:"user",
-      parts: [{text:userInput}],
-
-    },
-  ];
-
-setLoading(true);
-
-try {
-
-  const response = await axios.post(
-    `https://generativelanguage.googleapis.com/v1beta/models/gemini-pro:generateContent?key=${API_KEY}`,
-    {
-      contents:updateChat,
-    }
-
-  );
-
-  console.log("Gemini Pro API Response:" , response.data);
-
-  const modelResponse = 
-  response.data?.candidates?.[0]?.content?.parts?.[0]?.text || "";
-
-  if(modelResponse){
-
-    //Add model response
-    const updateChatWithModel = [
-      ...updateChat ,
+  const handleUserInput = async () => {
+    //add use input to chat
+    let updateChat = [
+      ...chat,
       {
-        role: "model",
-        parts: [{text:modelResponse}],
+        role:"user",
+        parts: [{text:userInput}],
       },
-
     ];
 
-    setChat(updateChatWithModel);
-    setUserInput("");
+    setLoading(true);
 
-  }
+    try {
+      const response = await axios.post(
+        `https://generativelanguage.googleapis.com/v1beta/models/gemini-pro:generateContent?key=${API_KEY}`,
+        {
+          contents:updateChat,
+        }
+      );
 
-}catch(error){
-  console.error("Error calling Gemini Pro API:",error);
-  console.error("Error response:",error,response);
-  seterror("An error Occur please Try again.");
+      console.log("Gemini Pro API Response:" , response.data);
 
+      const modelResponse = 
+      response.data?.candidates?.[0]?.content?.parts?.[0]?.text || "";
 
-}finally {
-  setLoading(false);
-}
-
-
-};
-
-const handleSpeech = async (text) => {
-  if (isSpeaking) {
-    // If already speaking, stop the speech
-    stop();
-    setSpeaking(false); // Corrected to setSpeaking
-  } else {
-    // If not speaking, start the speech
-    if (!(await isSpeakingAsync())) {
-      speak(text);
-      setSpeaking(true); // Corrected to setSpeaking
+      if(modelResponse){
+        //Add model response
+        const updateChatWithModel = [
+          ...updateChat ,
+          {
+            role: "model",
+            parts: [{text:modelResponse}],
+          },
+        ];
+        setChat(updateChatWithModel);
+        setUserInput("");
+      }
+    }catch(error){
+      console.error("Error calling Gemini Pro API:",error);
+      console.error("Error response:",error,response);
+      seterror("An error Occur please Try again.");
+    }finally {
+      setLoading(false);
     }
-  }
-};
+  };
 
+  const handleSpeech = async (text) => {
+    if (isSpeaking) {
+      // If already speaking, stop the speech
+      stop();
+      setSpeaking(false); // Corrected to setSpeaking
+    } else {
+      // If not speaking, start the speech
+      if (!(await isSpeakingAsync())) {
+        speak(text);
+        setSpeaking(true); // Corrected to setSpeaking
+      }
+    }
+  };
 
-const renderChatItem = ({item}) => (
-  <ChatBubble
-
-  role={item.role}
-  text={item.parts[0].text}
-  onSpeech={()=> handleSpeech(item.parts[0].text)}
-  />
-
-);
-
-
-return ( 
-  <View style={styles.container}>
-    <Text style={styles.title}>HWH Chatbot</Text>
-    <FlatList
-    data={chat}
-    renderItem={renderChatItem}
-    keyExtractor={(item,index) => index.toString()}
-    contentContainerStyle={styles.chatContainer}
+  const renderChatItem = ({item}) => (
+    <ChatBubble
+      role={item.role}
+      text={item.parts[0].text}
+      onSpeech={()=> handleSpeech(item.parts[0].text)}
     />
-    <View style={styles.inputContainer}>
-
-    <TextInput
-    style={styles.input}
-    plaeholder="Type your message here.."
-    placeholderTextColor="#ff00ff"
-    value={userInput}
-    onChangeText={setUserInput}
-    />
-
-    <TouchableOpacity style={styles.button} onPress={handleUserInput}>
-      <Text style={styles.buttonText}>Send</Text>
-    </TouchableOpacity>
+  );
+  return ( 
+    <View style={styles.container}>
+      <Text style={styles.title}>HWH Chatbot</Text>
+      <FlatList
+        data={chat}
+        renderItem={renderChatItem}
+        keyExtractor={(item,index) => index.toString()}
+        contentContainerStyle={styles.chatContainer}
+      />
+      <View style={styles.inputContainer}>
+      <TextInput
+        style={styles.input}
+        plaeholder="Type your message here.."
+        placeholderTextColor="#ff00ff"
+        value={userInput}
+        onChangeText={setUserInput}
+      />
+      <TouchableOpacity style={styles.button} onPress={handleUserInput}>
+        <Text style={styles.buttonText}>Send</Text>
+      </TouchableOpacity>
+      </View>
+      {loading && <ActivityIndicator style={styles.loading} color="#333"/>}
+      {error && <Text style={styles.error}>{error}</Text>}
     </View>
+  );
 
-    {loading && <ActivityIndicator style={styles.loading} color="#333"/>}
-    {error && <Text style={styles.error}>{error}</Text>}
-
-</View>
-
-
-);
 };
 
 const styles = StyleSheet.create({
@@ -145,28 +119,25 @@ const styles = StyleSheet.create({
   title:{
     fontSize: 24,
     fontWeight:"bold",
-   // color: "#333",
     marginBottom: 20,
     color: '#080742',
     fontSize: 20,
     marginTop: 50,
     textAlign: "center",
     backgroundColor:'#FFF',
+    borderColor:'#080742',
+    borderWidth:2,
+    borderRadius:10
   },
   chatContainer:{
     flexGrow: 1,
     justifyConten:"flex-end",
-
-
   },
 
   inputContainer: {
     flexDirection: "row",
     alignItems: "center",
     marginTop: 10,
-
-
-
   },
 
   input: {
@@ -179,23 +150,17 @@ const styles = StyleSheet.create({
     borderRadius: 25,
     color: "#080742",
     backgroundColor: "#fff",
-
   },
 
   button: {
-    //height:40,
-    //width:40,
     padding:10,
     backgroundColor:"#080742",
     borderRadius: 25,
-
   },
 
   buttonText: {
     color: "#fff",
     textAlign:"center",
-
-
   },
 
   loading:{

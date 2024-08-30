@@ -13,10 +13,8 @@ const VregisterScreen1 = () => {
   const [nic, setNic] = useState(''); //HFB
   const navigation = useNavigation();
   const URL = CONFIG.CONNECTION_URL;
-
   const [message, setMessage] = useState('');
   const [error, setError] = useState('');
-
 
   useEffect(() => {
     const fetchNic = async () => {
@@ -27,12 +25,10 @@ const VregisterScreen1 = () => {
     fetchNic();
   }, []);
   
-
   const handleChange = (index, key, value) => {
     const updatedVehicles = [...vehicles];
     updatedVehicles[index][key] = value;
     setVehicles(updatedVehicles);
-    
   };
 
   const addVehicle = () => {
@@ -84,45 +80,6 @@ const VregisterScreen1 = () => {
     }
   };
 
-  {/*const handleSubmit = async () => {
-    try {
-      const promises = vehicles.map(async (vehicle) => {
-        const { register_no, sv } = vehicle;
-        if (!register_no || !sv) {
-          setError('Please fill in all the fields.');
-          return;
-        }
-  
-        // Include register_no and sv in the QR code data
-        const qrData = ` ${register_no}, ${sv}`;
-  
-        // Set the qrData property in the vehicle object
-        vehicle.qrData = qrData;
-  
-        const vehicleInfo = {
-          Vehicle_number: register_no,
-          Type: sv,
-          NIC: nic, //HFB
-        
-        };
-        const response = await axios.post(`${URL}/vehicle/addVehicle`, vehicleInfo);
-        return response.data;
-      });
-  
-      const results = await Promise.all(promises);
-      setMessage('Register successful!');
-      setTimeout(() => {
-        navigation.push('vregister1', { vehicles: vehicles });
-      }, 2000);
-    } catch (error) {
-      setMessage('Error in Registration. Please try again.');
-      console.error('Error:', error);
-    }
-    
-  };
-*/}
-  
-
   return (
     <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
       <View style={{ flex: 1, backgroundColor: 'white' , marginTop:25}}>
@@ -150,8 +107,6 @@ const VregisterScreen1 = () => {
                 <Text className="text-center font-bold text-lg" style={{color:'#080742'}}>Next Vehicle</Text>
               </View>
             )}
-
-
               <View style={{ backgroundColor: '#E0E0E0', padding: 10, borderRadius: 20, alignSelf: 'center', marginTop: 40, width: 300,paddingLeft:25 }}>
                 <TextInput
                   placeholder='Register Number'
@@ -184,8 +139,6 @@ const VregisterScreen1 = () => {
           <Text style={{ color: 'white', fontWeight: 'bold', alignSelf: 'center' }}>Register All Vehicles</Text>
         </TouchableOpacity>
 
-        
-        
       </View>
     </ScrollView>
   );

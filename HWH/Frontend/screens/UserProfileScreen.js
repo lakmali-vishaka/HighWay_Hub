@@ -175,7 +175,7 @@ const styles = StyleSheet.create({
 
   plusIcon: {
     position: 'absolute',
-    bottom: -10,
+    bottom: -8,
     right: 0,
     fontSize: 45,
     color: '#ff6f00',

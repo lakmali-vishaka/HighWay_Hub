@@ -12,8 +12,8 @@ import CONFIG from '../config';
 
 export default function QRcodesScreen1() {
   const navigation = useNavigation();
-  const [refreshing, setRefreshing] = useState(false);  //refresh
-  const scrollViewRef = useRef(null); //refresh
+  const [refreshing, setRefreshing] = useState(false); 
+  const scrollViewRef = useRef(null);
   const timeoutRef = useRef(null);
   const URL = CONFIG.CONNECTION_URL;
 
@@ -41,19 +41,17 @@ export default function QRcodesScreen1() {
     setSelectedVehicle(vehicle);
     setEntrance('');
     setExit('');
-    //setTicketAmount(null);
     await AsyncStorage.removeItem('ticketAmount')
     await AsyncStorage.removeItem('Entrance');
     await AsyncStorage.removeItem('Exit');
-  try {
-    await AsyncStorage.setItem('selectedVehicle', JSON.stringify(vehicle));
-    setTicketAmount(null);
-    
-  } catch (error) {
-    console.error('Error saving selected vehicle:', error);
-  }
-};
-
+    try {
+      await AsyncStorage.setItem('selectedVehicle', JSON.stringify(vehicle));
+      setTicketAmount(null);
+      
+    } catch (error) {
+      console.error('Error saving selected vehicle:', error);
+    }
+  };
 
   const qrData = selectedVehicle
     ? `${selectedVehicle.register_no}, ${selectedVehicle.sv}, ${Entrance}`
@@ -64,26 +62,19 @@ export default function QRcodesScreen1() {
       try {
         const response = await axios.post(`${URL}/vehicle/get-entrance`, { Vehicle_number: selectedVehicle.register_no },{
         timeout: 3000 // Set timeout to 3 seconds (adjust as needed)
-      });
+        });
         if (response.data.isValid) {
           const fetchedEntrance = response.data.entrance;
           setEntrance(fetchedEntrance);
-          //await AsyncStorage.removeItem('Exit');
           await AsyncStorage.setItem('Entrance', fetchedEntrance);
-          await AsyncStorage.setItem('EntranceMessage', `Your vehicle has entered the highway from ${fetchedEntrance} entrance`);  //test123
+          await AsyncStorage.setItem('EntranceMessage', `Your vehicle has entered the highway from ${fetchedEntrance} entrance`);  
         } else {
           alert('Vehicle Not Found', 'The vehicle number is not registered.');
         }
       } catch (error) {
         
-      }
-    };
-
-  {/*useEffect(() => {
-    if (selectedVehicle) {
-      fetchEntranceFromBackend();
     }
-  }, [selectedVehicle]);*/}
+  };
 
   const fetchExitFromBackend = async () => {
     try {
@@ -94,7 +85,7 @@ export default function QRcodesScreen1() {
         const fetchedExit = response.data.exit;
         setExit(fetchedExit);
         await AsyncStorage.setItem('Exit', fetchedExit);
-        await AsyncStorage.setItem('ExitMessage', ` Your vehicle has exited the highway from ${fetchedExit} exit`);  //test123
+        await AsyncStorage.setItem('ExitMessage', ` Your vehicle has exited the highway from ${fetchedExit} exit`);  
         await AsyncStorage.removeItem('EntranceMessage');
       } else {
         alert('Vehicle Not Found', 'The vehicle number is not registered.');
@@ -103,12 +94,6 @@ export default function QRcodesScreen1() {
       
     }
   };
-
-  {/*useEffect(() => {
-    if (selectedVehicle) {
-      fetchExitFromBackend();
-    }
-  }, [selectedVehicle]);*/}
 
   const checkTicketValidity = async () => {
     try {
@@ -129,7 +114,6 @@ export default function QRcodesScreen1() {
     if (Entrance && Exit) {
       checkTicketValidity();
     }
-    //setTicketAmount(null)
   }, [Entrance, Exit]);
 
   //refresh
@@ -142,11 +126,12 @@ export default function QRcodesScreen1() {
     if (!Entrance){
       await fetchEntranceFromBackend();
       await AsyncStorage.removeItem('paymentStatus');
-      alert('Welcome ! your journey started. Have a safe journey.');
+      alert('Welcome ! your journey has started. Have a safe journey.');
+      //await AsyncStorage.removeItem('EntranceMessage');
+      //await AsyncStorage.removeItem('ExitMessage');
     }
     setRefreshing(false);
   };
-  //refresh
 
   const handleContinue = async () => {
     navigation.push('PaymentAmount');
