@@ -32,7 +32,7 @@ import ChatBubble from './screens/ChatBubble';
 
 const Stack = createNativeStackNavigator();
 
-function index() {
+function App() {
 
   
   return (
@@ -72,7 +72,7 @@ function index() {
 
 export default () => (
   <StripeProvider publishableKey="pk_test_51P3ZJyHvU44g3stxbCmjZt5NT4rJP93lBN6a8Z9mpvhW1kbTOfyYjM5wNl3EYhfAH82gnqLn3fGnqyRIMhyU3cxa00qWnvEUKx">
-       <index/>
+       <App/>
   </StripeProvider>
 );
 
